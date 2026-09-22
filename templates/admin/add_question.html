@@ -1,0 +1,165 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block title %}Add Question | CoderesQ Admin{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-6">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-extrabold text-white">Create New Challenge Question</h1>
+            <p class="text-xs text-slate-400 mt-0.5">Enforce exactly 1 bug for Python (Round 1) or exactly 7 bugs for Java (Round 2)</p>
+        </div>
+        <a href="{{ url_for('admin.questions') }}" class="text-xs text-slate-400 hover:text-white">
+            &larr; Back to Questions
+        </a>
+    </div>
+
+    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-xl">
+        <form action="{{ url_for('admin.add_question') }}" method="POST" class="space-y-6" id="question-form">
+            
+            <!-- Round Selection -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Target Round *</label>
+                    <select name="round" id="round-select" required onchange="toggleRoundFields()"
+                        class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-slate-100 focus:outline-none focus:border-indigo-500 font-mono">
+                        <option value="1">Round 1 (Python - Exactly 1 Bug)</option>
+                        <option value="2">Round 2 (Java - Exactly 7 Bugs)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Difficulty *</label>
+                    <select name="difficulty" required
+                        class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-slate-100 focus:outline-none focus:border-indigo-500">
+                        <option value="Medium">Medium</option>
+                        <option value="Hard" selected>Hard</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Points / Marks *</label>
+                    <input type="number" step="0.5" name="points" id="points-input" value="5.0" required
+                        class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-slate-100 focus:outline-none focus:border-indigo-500 font-mono">
+                </div>
+            </div>
+
+            <!-- Title & Concept -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Question Title *</label>
+                    <input type="text" name="title" required placeholder="e.g. Sieve of Eratosthenes Boundary"
+                        class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-slate-100 focus:outline-none focus:border-indigo-500">
+                </div>
+
+                <div id="py-error-type-container">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Error Type (Python 1 Bug) *</label>
+                    <input type="text" name="error_type" placeholder="e.g. Logical Error, Off-by-one, Syntax"
+                        class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-slate-100 focus:outline-none focus:border-indigo-500">
+                </div>
+            </div>
+
+            <!-- Problem Description -->
+            <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Problem Description *</label>
+                <textarea name="question_text" rows="3" required placeholder="Describe the task and what the function is intended to do..."
+                    class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-slate-100 focus:outline-none focus:border-indigo-500 font-sans"></textarea>
+            </div>
+
+            <!-- Code Editors (Buggy & Correct) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-rose-400 mb-1">
+                        <i class="fa-solid fa-bug mr-1"></i> Buggy Code *
+                    </label>
+                    <textarea name="buggy_code" id="buggy_code" rows="12" required placeholder="# Paste buggy code here..."
+                        class="w-full p-3 bg-slate-950 border border-rose-500/30 rounded-lg text-xs text-slate-100 focus:outline-none focus:border-rose-500 font-mono"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-1">
+                        <i class="fa-solid fa-check mr-1"></i> Correct Solution Code *
+                    </label>
+                    <textarea name="correct_code" id="correct_code" rows="12" required placeholder="# Paste expected correct solution code..."
+                        class="w-full p-3 bg-slate-950 border border-emerald-500/30 rounded-lg text-xs text-slate-100 focus:outline-none focus:border-emerald-500 font-mono"></textarea>
+                </div>
+            </div>
+
+            <!-- Java 7 Errors Detailed Specification (Only visible when Round 2 is selected) -->
+            <div id="java-errors-section" class="hidden space-y-4 border-t border-slate-800 pt-6">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-sm font-bold text-red-400 uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-brands fa-java"></i>
+                        Specification for Exactly 7 Java Errors
+                    </h3>
+                    <span class="text-xs text-slate-500 font-mono">All 7 Required</span>
+                </div>
+
+                {% for i in range(1, 8) %}
+                <div class="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-3">
+                    <div class="flex items-center justify-between text-xs font-mono">
+                        <span class="font-bold text-indigo-400">ERROR #{{ i }}</span>
+                        <input type="text" name="error_{{ i }}_category" placeholder="Category (e.g. Type, Loop, OOP)"
+                            class="px-2 py-1 bg-slate-900 border border-slate-800 rounded text-slate-200 text-xs w-48">
+                    </div>
+                    <input type="text" name="error_{{ i }}_desc" placeholder="Description of bug #{{ i }}..."
+                        class="w-full px-3 py-1.5 bg-slate-900 border border-slate-800 rounded text-xs text-slate-100">
+                    <div class="grid grid-cols-2 gap-3">
+                        <textarea name="error_{{ i }}_buggy" rows="2" placeholder="Buggy snippet..."
+                            class="w-full p-2 bg-slate-900 border border-rose-500/30 rounded text-xs font-mono text-rose-300"></textarea>
+                        <textarea name="error_{{ i }}_fixed" rows="2" placeholder="Fixed solution snippet..."
+                            class="w-full p-2 bg-slate-900 border border-emerald-500/30 rounded text-xs font-mono text-emerald-300"></textarea>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Explanation & Test Cases -->
+            <div class="space-y-4 border-t border-slate-800 pt-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Explanation of Fix</label>
+                    <textarea name="explanation" rows="2" placeholder="Explain why the bug occurred and how it is fixed..."
+                        class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-slate-100 focus:outline-none focus:border-indigo-500"></textarea>
+                </div>
+
+                <div id="test-cases-section">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Test Cases (JSON format)</label>
+                    <textarea name="test_cases" rows="3" placeholder='[{"call": "func(10)", "expected": 20, "description": "Sample 1"}]'
+                        class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-100 font-mono"></textarea>
+                </div>
+            </div>
+
+            <div class="pt-4 flex items-center justify-end gap-3">
+                <a href="{{ url_for('admin.questions') }}" class="px-4 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white">
+                    Cancel
+                </a>
+                <button type="submit"
+                    class="px-6 py-2.5 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-500 shadow-lg shadow-indigo-600/30 transition">
+                    Save Question
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function toggleRoundFields() {
+        const roundSelect = document.getElementById('round-select');
+        const javaSec = document.getElementById('java-errors-section');
+        const pySec = document.getElementById('py-error-type-container');
+        const pointsInput = document.getElementById('points-input');
+
+        if (roundSelect.value === '2') {
+            javaSec.classList.remove('hidden');
+            pySec.classList.add('hidden');
+            pointsInput.value = '14.0';
+        } else {
+            javaSec.classList.add('hidden');
+            pySec.classList.remove('hidden');
+            pointsInput.value = '5.0';
+        }
+    }
+</script>
+{% endblock %}

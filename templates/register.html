@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block title %}Participant Registration | CoderesQ{% endblock %}
+
+{% block content %}
+<div class="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-xl w-full bg-slate-900/90 border border-slate-800 rounded-2xl shadow-2xl p-8 backdrop-blur-xl relative">
+        <div class="absolute -top-3 left-8 px-3 py-1 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-md text-[11px] font-mono font-bold tracking-wider uppercase text-white shadow-md">
+            Candidate Enrollment
+        </div>
+
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-extrabold text-white">Join CoderesQ Challenge</h2>
+            <p class="text-sm text-slate-400 mt-2">Enter your academic credentials to start debugging</p>
+        </div>
+
+        <form action="{{ url_for('participant.register') }}" method="POST" class="space-y-4">
+            <div>
+                <label for="name" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Full Name *</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                        <i class="fa-solid fa-user text-xs"></i>
+                    </span>
+                    <input type="text" id="name" name="name" required value="{{ form.get('name', '') }}"
+                        placeholder="e.g. John Doe"
+                        class="w-full pl-10 pr-4 py-2.5 bg-slate-950/80 border border-slate-800 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label for="participant_id" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Register / Roll No. *</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                            <i class="fa-solid fa-id-badge text-xs"></i>
+                        </span>
+                        <input type="text" id="participant_id" name="participant_id" required value="{{ form.get('participant_id', '') }}"
+                            placeholder="e.g. 21CS042"
+                            class="w-full pl-10 pr-4 py-2.5 bg-slate-950/80 border border-slate-800 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition uppercase font-mono">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="email" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Email Address *</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                            <i class="fa-solid fa-envelope text-xs"></i>
+                        </span>
+                        <input type="email" id="email" name="email" required value="{{ form.get('email', '') }}"
+                            placeholder="e.g. john@college.edu"
+                            class="w-full pl-10 pr-4 py-2.5 bg-slate-950/80 border border-slate-800 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition">
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <label for="college" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">College / University Name *</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                        <i class="fa-solid fa-building-columns text-xs"></i>
+                    </span>
+                    <input type="text" id="college" name="college" required value="{{ form.get('college', '') }}"
+                        placeholder="e.g. MIT Institute of Technology"
+                        class="w-full pl-10 pr-4 py-2.5 bg-slate-950/80 border border-slate-800 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label for="department" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Department *</label>
+                    <select id="department" name="department" required
+                        class="w-full px-3.5 py-2.5 bg-slate-950/80 border border-slate-800 rounded-lg text-sm text-slate-100 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition">
+                        <option value="" disabled {% if not form.get('department') %}selected{% endif %}>Select Dept</option>
+                        <option value="Computer Science" {% if form.get('department') == 'Computer Science' %}selected{% endif %}>Computer Science (CSE)</option>
+                        <option value="Information Technology" {% if form.get('department') == 'Information Technology' %}selected{% endif %}>Information Technology (IT)</option>
+                        <option value="AI & Data Science" {% if form.get('department') == 'AI & Data Science' %}selected{% endif %}>AI & Data Science</option>
+                        <option value="Electronics & Communication" {% if form.get('department') == 'Electronics & Communication' %}selected{% endif %}>Electronics & Comm (ECE)</option>
+                        <option value="Electrical Engineering" {% if form.get('department') == 'Electrical Engineering' %}selected{% endif %}>Electrical Engineering (EEE)</option>
+                        <option value="Other" {% if form.get('department') == 'Other' %}selected{% endif %}>Other Department</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="year" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Year of Study *</label>
+                    <select id="year" name="year" required
+                        class="w-full px-3.5 py-2.5 bg-slate-950/80 border border-slate-800 rounded-lg text-sm text-slate-100 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition">
+                        <option value="" disabled {% if not form.get('year') %}selected{% endif %}>Select Year</option>
+                        <option value="1st Year" {% if form.get('year') == '1st Year' %}selected{% endif %}>1st Year</option>
+                        <option value="2nd Year" {% if form.get('year') == '2nd Year' %}selected{% endif %}>2nd Year</option>
+                        <option value="3rd Year" {% if form.get('year') == '3rd Year' %}selected{% endif %}>3rd Year</option>
+                        <option value="4th Year" {% if form.get('year') == '4th Year' %}selected{% endif %}>4th Year</option>
+                        <option value="Postgraduate" {% if form.get('year') == 'Postgraduate' %}selected{% endif %}>Postgraduate</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <label for="team_name" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Team Name (Optional)</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                        <i class="fa-solid fa-users text-xs"></i>
+                    </span>
+                    <input type="text" id="team_name" name="team_name" value="{{ form.get('team_name', '') }}"
+                        placeholder="e.g. ByteBusters"
+                        class="w-full pl-10 pr-4 py-2.5 bg-slate-950/80 border border-slate-800 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition">
+                </div>
+            </div>
+
+            <div class="pt-4">
+                <button type="submit"
+                    class="w-full py-3 px-4 rounded-xl font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 shadow-lg shadow-indigo-600/30 transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                    <span>Continue to Competition Rules</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

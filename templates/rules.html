@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %}Competition Rules | CoderesQ{% endblock %}
+
+{% block content %}
+<div class="flex-1 max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl shadow-2xl p-8 backdrop-blur-xl">
+        <div class="flex items-center justify-between pb-6 border-b border-slate-800">
+            <div>
+                <h1 class="text-3xl font-extrabold text-white">CoderesQ Rules &amp; Regulations</h1>
+                <p class="text-sm text-slate-400 mt-1">
+                    Participant: <strong class="text-indigo-300">{{ participant.name }}</strong> ({{ participant.participant_id }}) &bull; {{ participant.college }}
+                </p>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-indigo-950/80 border border-indigo-500/30 flex items-center justify-center text-indigo-400 text-xl">
+                <i class="fa-solid fa-gavel"></i>
+            </div>
+        </div>
+
+        <div class="py-6 space-y-6">
+            <!-- Round 1 Details -->
+            <div class="p-5 rounded-xl bg-slate-950/60 border border-indigo-500/30">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="px-2.5 py-0.5 rounded text-xs font-mono font-bold bg-indigo-900/60 text-indigo-300 border border-indigo-500/40">
+                        ROUND 1
+                    </span>
+                    <h3 class="text-lg font-bold text-white">Python Debugging (20 Questions)</h3>
+                </div>
+                <ul class="space-y-2 text-sm text-slate-300 list-disc list-inside">
+                    <li><strong class="text-white">Medium to Hard difficulty</strong> covering syntax, logical traps, scoping, recursion, and exceptions.</li>
+                    <li><strong class="text-amber-400">Strictly ONE intentional error</strong> is present in each question. Do not introduce secondary changes.</li>
+                    <li>Time limit: <strong class="text-indigo-300 font-mono">{{ comp.r1_duration_minutes if comp else 30 }} Minutes</strong>. The countdown begins upon entering.</li>
+                    <li>Scoring: <strong class="text-emerald-400 font-mono">{{ comp.r1_points_per_question if comp else 5 }} marks per question</strong> (Total: 100 Marks).</li>
+                    <li>Test your code with the <strong>Run Code</strong> button before official submission.</li>
+                </ul>
+            </div>
+
+            <!-- Round 2 Details -->
+            <div class="p-5 rounded-xl bg-slate-950/60 border border-purple-500/30">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="px-2.5 py-0.5 rounded text-xs font-mono font-bold bg-purple-900/60 text-purple-300 border border-purple-500/40">
+                        ROUND 2
+                    </span>
+                    <h3 class="text-lg font-bold text-white">Java Debugging (5 Complex Systems)</h3>
+                </div>
+                <ul class="space-y-2 text-sm text-slate-300 list-disc list-inside">
+                    <li><strong class="text-white">Hard difficulty</strong> algorithms and real-world system implementations.</li>
+                    <li>Each Java program contains <strong class="text-rose-400 font-semibold">exactly 7 intentional errors</strong>.</li>
+                    <li>Errors cover: Variable declarations, method signatures, loops, collections, conditional logic, OOP, and Java exceptions.</li>
+                    <li>Time limit: <strong class="text-purple-300 font-mono">{{ comp.r2_duration_minutes if comp else 30 }} Minutes</strong>.</li>
+                    <li>Scoring: <strong class="text-emerald-400 font-mono">{{ comp.r2_points_per_error if comp else 2 }} marks per error resolved</strong> (14 marks/question &bull; Total: 70 Marks).</li>
+                </ul>
+            </div>
+
+            <!-- General Security & Anti-Cheat Rules -->
+            <div class="p-5 rounded-xl bg-slate-950/60 border border-rose-500/30">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="px-2.5 py-0.5 rounded text-xs font-mono font-bold bg-rose-900/60 text-rose-300 border border-rose-500/40">
+                        INTEGRITY &amp; ANTI-CHEAT
+                    </span>
+                    <h3 class="text-lg font-bold text-white">Competition Code of Conduct</h3>
+                </div>
+                <ul class="space-y-2 text-sm text-slate-300 list-disc list-inside">
+                    <li><strong class="text-rose-300">No Tab Switching:</strong> Leaving or blurring the challenge browser window is strictly monitored and flagged.</li>
+                    <li><strong class="text-rose-300">No Refreshing:</strong> Do not refresh or close the browser tab. The server-side timer will continue running.</li>
+                    <li><strong class="text-white">Auto-Save:</strong> Your drafted code is preserved automatically as you navigate between questions.</li>
+                    <li><strong class="text-white">Auto-Submit:</strong> When the countdown reaches 00:00, all answers are submitted automatically.</li>
+                    <li><strong class="text-white">Results:</strong> Detailed performance scorecards are generated immediately upon final submission.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Agreement Checkbox & Start Button -->
+        <div class="pt-6 border-t border-slate-800">
+            <label class="flex items-center gap-3 cursor-pointer group mb-6">
+                <input type="checkbox" id="rules-checkbox"
+                    class="w-5 h-5 rounded bg-slate-950 border-slate-700 text-indigo-600 focus:ring-indigo-500 focus:ring-offset-slate-900 transition cursor-pointer">
+                <span class="text-sm font-semibold text-slate-200 group-hover:text-white select-none">
+                    I have read, understood, and agree to abide by all the CoderesQ competition rules.
+                </span>
+            </label>
+
+            <div class="flex items-center justify-between">
+                <a href="{{ url_for('participant.index') }}" class="text-sm text-slate-400 hover:text-slate-200">
+                    &larr; Back to Home
+                </a>
+                <a id="start-btn" href="{{ url_for('competition.round1') }}"
+                    class="opacity-50 pointer-events-none px-8 py-3.5 rounded-xl font-bold text-white bg-gradient-to-r from-indigo-600 to-purple-600 shadow-xl transition-all flex items-center gap-2">
+                    <span>Enter Round 1 (Python)</span>
+                    <i class="fa-solid fa-bolt text-xs"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const checkbox = document.getElementById('rules-checkbox');
+    const startBtn = document.getElementById('start-btn');
+
+    checkbox.addEventListener('change', function() {
+        if (this.checked) {
+            startBtn.classList.remove('opacity-50', 'pointer-events-none');
+            startBtn.classList.add('hover:shadow-indigo-500/25', 'transform', 'hover:-translate-y-0.5');
+        } else {
+            startBtn.classList.add('opacity-50', 'pointer-events-none');
+            startBtn.classList.remove('hover:shadow-indigo-500/25', 'transform', 'hover:-translate-y-0.5');
+        }
+    });
+</script>
+{% endblock %}

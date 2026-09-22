@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CoderesQ | Code. Debug. Conquer.{% endblock %}</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            950: '#070a12',
+                            900: '#0b0f19',
+                            850: '#0f172a',
+                            800: '#1e293b',
+                            700: '#334155'
+                        },
+                        brand: {
+                            indigo: '#6366f1',
+                            purple: '#8b5cf6',
+                            cyan: '#06b6d4',
+                            emerald: '#10b981',
+                            rose: '#f43f5e'
+                        }
+                    },
+                    fontFamily: {
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-[#0b0f19] text-slate-100 min-h-screen flex flex-col selection:bg-indigo-500/30 selection:text-indigo-200">
+
+    <!-- Global Navigation -->
+    <nav class="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <a href="{{ url_for('participant.index') }}" class="flex items-center gap-2 group">
+                        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-500 via-purple-500 to-cyan-400 p-0.5 shadow-lg group-hover:scale-105 transition-transform">
+                            <div class="w-full h-full bg-slate-950 rounded-[7px] flex items-center justify-center">
+                                <i class="fa-solid fa-terminal text-indigo-400 text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="font-extrabold tracking-wider text-lg bg-gradient-to-r from-white via-slate-200 to-indigo-300 bg-clip-text text-transparent">
+                                CODERESQ
+                            </span>
+                            <span class="text-[9px] uppercase tracking-widest text-indigo-400 font-mono -mt-1 font-semibold">
+                                Code. Debug. Conquer.
+                            </span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <a href="{{ url_for('participant.leaderboard') }}" class="text-sm font-medium text-slate-300 hover:text-white transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-slate-800/50">
+                        <i class="fa-solid fa-trophy text-amber-400 text-xs"></i>
+                        Leaderboard
+                    </a>
+                    
+                    {% if session.get('participant_id') %}
+                    <span class="text-xs font-mono bg-indigo-950/80 text-indigo-300 border border-indigo-500/40 px-2.5 py-1 rounded-full flex items-center gap-1.5">
+                        <i class="fa-solid fa-user-check text-[10px]"></i>
+                        {{ session.get('participant_id') }}
+                    </span>
+                    <a href="{{ url_for('participant.result') }}" class="text-xs font-medium text-slate-400 hover:text-white transition">
+                        My Result
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('participant.register') }}" class="text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-1.5 rounded-lg shadow-md hover:shadow-indigo-500/25 transition">
+                        Register
+                    </a>
+                    {% endif %}
+
+                    <div class="h-4 w-px bg-slate-800"></div>
+
+                    <a href="{{ url_for('admin.dashboard') if session.get('admin_logged_in') else url_for('auth.admin_login') }}" class="text-xs text-slate-400 hover:text-slate-200 flex items-center gap-1">
+                        <i class="fa-solid fa-shield-halved text-xs"></i>
+                        Admin
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Alerts -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-3 w-full">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="mb-3 p-3.5 rounded-lg text-sm flex items-center gap-3 border backdrop-blur-md animate-fade-in
+                        {% if category == 'success' %} bg-emerald-950/80 text-emerald-200 border-emerald-500/50
+                        {% elif category == 'error' %} bg-rose-950/80 text-rose-200 border-rose-500/50
+                        {% elif category == 'warning' %} bg-amber-950/80 text-amber-200 border-amber-500/50
+                        {% else %} bg-indigo-950/80 text-indigo-200 border-indigo-500/50 {% endif %}">
+                        <i class="fa-solid {% if category == 'success' %}fa-circle-check text-emerald-400{% elif category == 'error' %}fa-circle-xmark text-rose-400{% elif category == 'warning' %}fa-triangle-exclamation text-amber-400{% else %}fa-circle-info text-indigo-400{% endif %}"></i>
+                        <span class="font-medium">{{ message }}</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main Body Content -->
+    <main class="flex-1 flex flex-col">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="border-t border-slate-900 bg-slate-950 py-4 text-xs text-slate-500 text-center">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+            <span>&copy; 2026 <strong>CoderesQ</strong> &bull; Code Debugging Championship</span>
+            <span class="font-mono text-[11px] text-slate-600">Built for Precision Debuggers &middot; Python &amp; Java</span>
+        </div>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

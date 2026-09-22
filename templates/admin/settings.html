@@ -1,0 +1,137 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block title %}Competition Settings | CoderesQ Admin{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-6">
+    <div>
+        <h1 class="text-2xl font-extrabold text-white">Competition Controls &amp; Settings</h1>
+        <p class="text-xs text-slate-400 mt-0.5">Configure live countdown timers, round scoring multipliers, and platform security policies</p>
+    </div>
+
+    <!-- Competition Config Form -->
+    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
+        <form action="{{ url_for('admin.settings') }}" method="POST" class="space-y-6">
+            <input type="hidden" name="action" value="save_config">
+
+            <h3 class="text-sm font-bold uppercase tracking-wider text-indigo-400 border-b border-slate-800 pb-2">
+                1. Round Timers &amp; Enablement
+            </h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <!-- Round 1 Settings -->
+                <div class="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold uppercase font-mono text-yellow-400">Round 1 (Python)</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" name="r1_enabled" value="1" class="sr-only peer" {% if comp.r1_enabled %}checked{% endif %}>
+                            <div class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
+                        </label>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Duration (Minutes)</label>
+                        <input type="number" name="r1_duration_minutes" value="{{ comp.r1_duration_minutes }}" min="1" max="180" required
+                            class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-slate-100 font-mono">
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Marks per Question</label>
+                        <input type="number" step="0.5" name="r1_points_per_question" value="{{ comp.r1_points_per_question }}" required
+                            class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-slate-100 font-mono">
+                    </div>
+                </div>
+
+                <!-- Round 2 Settings -->
+                <div class="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold uppercase font-mono text-red-400">Round 2 (Java)</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" name="r2_enabled" value="1" class="sr-only peer" {% if comp.r2_enabled %}checked{% endif %}>
+                            <div class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
+                        </label>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Duration (Minutes)</label>
+                        <input type="number" name="r2_duration_minutes" value="{{ comp.r2_duration_minutes }}" min="1" max="180" required
+                            class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-slate-100 font-mono">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Total Marks / Q</label>
+                            <input type="number" step="0.5" name="r2_points_per_question" value="{{ comp.r2_points_per_question }}" required
+                                class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-slate-100 font-mono">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Marks / Error</label>
+                            <input type="number" step="0.5" name="r2_points_per_error" value="{{ comp.r2_points_per_error }}" required
+                                class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-slate-100 font-mono">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="text-sm font-bold uppercase tracking-wider text-indigo-400 border-b border-slate-800 pb-2 pt-2">
+                2. Platform Integrity &amp; Transparency
+            </h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <label class="flex items-center gap-3 p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 cursor-pointer">
+                    <input type="checkbox" name="anti_cheat_enabled" value="1" {% if comp.anti_cheat_enabled %}checked{% endif %}
+                        class="w-4 h-4 rounded text-indigo-600 bg-slate-900 border-slate-700">
+                    <div>
+                        <span class="text-xs font-bold text-white block">Anti-Cheat Activity Guard</span>
+                        <span class="text-[10px] text-slate-400">Log window blur, tab switches, and shortcuts</span>
+                    </div>
+                </label>
+
+                <label class="flex items-center gap-3 p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 cursor-pointer">
+                    <input type="checkbox" name="allow_answer_review" value="1" {% if comp.allow_answer_review %}checked{% endif %}
+                        class="w-4 h-4 rounded text-indigo-600 bg-slate-900 border-slate-700">
+                    <div>
+                        <span class="text-xs font-bold text-white block">Allow Participant Solution Review</span>
+                        <span class="text-[10px] text-slate-400">Permits participants to view correct answers on result page</span>
+                    </div>
+                </label>
+            </div>
+
+            <div class="pt-4 flex justify-end">
+                <button type="submit"
+                    class="px-6 py-2.5 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-500 shadow-lg shadow-indigo-600/30 transition">
+                    Save Competition Settings
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Reset Danger Zone -->
+    <div class="bg-rose-950/20 border border-rose-500/30 rounded-2xl p-6 shadow-xl space-y-4">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-rose-600/20 border border-rose-500/40 flex items-center justify-center text-rose-400">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div>
+                <h3 class="text-sm font-bold text-rose-300 uppercase tracking-wider">Danger Zone: Reset Competition</h3>
+                <p class="text-xs text-rose-400/80">Wipes all participants, submissions, and integrity logs for a fresh round</p>
+            </div>
+        </div>
+
+        <form action="{{ url_for('admin.settings') }}" method="POST" class="space-y-4">
+            <input type="hidden" name="action" value="reset_competition">
+
+            <div>
+                <label class="block text-xs font-semibold text-rose-300 mb-1">Type <strong>RESET</strong> to confirm action:</label>
+                <input type="text" name="confirm_reset" placeholder="RESET" required
+                    class="w-48 px-3 py-2 bg-slate-950 border border-rose-500/50 rounded-lg text-sm text-white font-mono uppercase">
+            </div>
+
+            <button type="submit" onclick="return confirm('WARNING: This permanently removes all candidate records and submissions. Proceed?');"
+                class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-rose-600 hover:bg-rose-500 shadow-md shadow-rose-600/30 transition">
+                Reset Competition Data
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

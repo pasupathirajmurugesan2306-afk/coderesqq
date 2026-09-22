@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+
+{% block title %}Competition Result | CoderesQ{% endblock %}
+
+{% block head %}
+<style>
+    @media print {
+        nav, footer, .no-print {
+            display: none !important;
+        }
+        body {
+            background: white !important;
+            color: black !important;
+        }
+        .card-print {
+            border: 1px solid #ddd !important;
+            background: white !important;
+            color: black !important;
+            box-shadow: none !important;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="flex-1 max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+    <div class="card-print bg-slate-900/90 border border-slate-800 rounded-3xl shadow-2xl p-8 backdrop-blur-xl relative overflow-hidden">
+        
+        <!-- Header Banner -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pb-8 border-b border-slate-800">
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-cyan-400 p-1 flex items-center justify-center shadow-lg">
+                    <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center">
+                        <i class="fa-solid fa-award text-indigo-400 text-2xl"></i>
+                    </div>
+                </div>
+                <div>
+                    <span class="text-xs font-mono uppercase tracking-widest text-indigo-400 font-bold">Official Performance Scorecard</span>
+                    <h1 class="text-3xl font-extrabold text-white">CODERESQ RESULT</h1>
+                </div>
+            </div>
+
+            <!-- Download / Print Button -->
+            <div class="flex items-center gap-3 no-print">
+                <button onclick="window.print()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5 shadow">
+                    <i class="fa-solid fa-print"></i>
+                    Print / Download Scorecard
+                </button>
+            </div>
+        </div>
+
+        <!-- Participant Information Strip -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 py-6 border-b border-slate-800/80 text-xs">
+            <div>
+                <span class="text-slate-500 uppercase tracking-wider block font-semibold mb-0.5">Participant</span>
+                <span class="font-bold text-slate-100 text-sm">{{ participant.name }}</span>
+            </div>
+            <div>
+                <span class="text-slate-500 uppercase tracking-wider block font-semibold mb-0.5">Register ID</span>
+                <span class="font-mono font-bold text-indigo-400 text-sm">{{ participant.participant_id }}</span>
+            </div>
+            <div>
+                <span class="text-slate-500 uppercase tracking-wider block font-semibold mb-0.5">Institution</span>
+                <span class="font-semibold text-slate-300">{{ participant.college }}</span>
+            </div>
+            <div>
+                <span class="text-slate-500 uppercase tracking-wider block font-semibold mb-0.5">Dept / Year</span>
+                <span class="text-slate-300">{{ participant.department }} &bull; {{ participant.year }}</span>
+            </div>
+        </div>
+
+        <!-- Scores Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 my-8">
+            <!-- Round 1 Card -->
+            <div class="p-5 rounded-2xl bg-slate-950/80 border border-indigo-500/30">
+                <div class="flex items-center justify-between text-xs font-mono text-slate-400 mb-2">
+                    <span>ROUND 1</span>
+                    <i class="fa-brands fa-python text-yellow-400 text-base"></i>
+                </div>
+                <div class="text-sm font-semibold text-slate-300">Python Debugging</div>
+                <div class="mt-3 flex items-baseline gap-1">
+                    <span class="text-3xl font-extrabold font-mono text-white">{{ participant.r1_score }}</span>
+                    <span class="text-xs font-mono text-slate-500">/ 100 Marks</span>
+                </div>
+                <div class="mt-2 text-[11px] text-slate-400">
+                    20 Questions &bull; 1 Bug Each
+                </div>
+            </div>
+
+            <!-- Round 2 Card -->
+            <div class="p-5 rounded-2xl bg-slate-950/80 border border-purple-500/30">
+                <div class="flex items-center justify-between text-xs font-mono text-slate-400 mb-2">
+                    <span>ROUND 2</span>
+                    <i class="fa-brands fa-java text-red-400 text-base"></i>
+                </div>
+                <div class="text-sm font-semibold text-slate-300">Java Debugging</div>
+                <div class="mt-3 flex items-baseline gap-1">
+                    <span class="text-3xl font-extrabold font-mono text-white">{{ participant.r2_score }}</span>
+                    <span class="text-xs font-mono text-slate-500">/ 70 Marks</span>
+                </div>
+                <div class="mt-2 text-[11px] text-slate-400">
+                    5 Systems &bull; 7 Bugs Each
+                </div>
+            </div>
+
+            <!-- Overall Total Card -->
+            <div class="p-5 rounded-2xl bg-gradient-to-br from-indigo-950/60 via-purple-950/60 to-slate-900 border border-indigo-500/50 shadow-xl">
+                <div class="flex items-center justify-between text-xs font-mono text-indigo-400 mb-2">
+                    <span class="font-bold">TOTAL SCORE</span>
+                    <i class="fa-solid fa-chart-simple text-base"></i>
+                </div>
+                <div class="text-sm font-semibold text-slate-200">Overall Benchmark</div>
+                <div class="mt-3 flex items-baseline gap-1">
+                    <span class="text-4xl font-extrabold font-mono text-white">{{ participant.total_score }}</span>
+                    <span class="text-xs font-mono text-slate-400">/ {{ max_score }}</span>
+                </div>
+                <div class="mt-2 flex items-center justify-between text-xs font-mono">
+                    <span class="text-slate-400">Accuracy: <strong class="text-emerald-400">{{ pct }}%</strong></span>
+                    <span class="text-slate-400">Time: <strong class="text-indigo-300">{{ participant.formatted_time }}</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Badge Banner -->
+        <div class="p-4 rounded-xl bg-slate-950/90 border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-indigo-600/20 border border-indigo-500/40 flex items-center justify-center text-indigo-400">
+                    <i class="fa-solid fa-medal text-lg"></i>
+                </div>
+                <div>
+                    <span class="text-[10px] uppercase font-mono text-slate-400 block font-semibold">Proficiency Rating</span>
+                    <span class="text-base font-bold text-white">{{ performance }}</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <span class="text-xs font-mono text-slate-400">Championship Status:</span>
+                <span class="px-2.5 py-1 rounded-full text-xs font-bold font-mono bg-emerald-950 text-emerald-300 border border-emerald-500/40 uppercase">
+                    Completed
+                </span>
+            </div>
+        </div>
+
+        <!-- Submissions Summary Accordion / Section -->
+        <div class="border-t border-slate-800 pt-6 mb-8">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-300 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-list-check text-indigo-400"></i>
+                Question Submissions Breakdown
+            </h3>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border border-slate-800 rounded-lg overflow-hidden">
+                    <thead class="bg-slate-950 text-slate-400 uppercase font-mono border-b border-slate-800">
+                        <tr>
+                            <th class="py-2.5 px-3">Round</th>
+                            <th class="py-2.5 px-3">Question</th>
+                            <th class="py-2.5 px-3">Status</th>
+                            <th class="py-2.5 px-3">Errors Fixed</th>
+                            <th class="py-2.5 px-3">Score</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60 bg-slate-900/40 font-mono">
+                        {% for q_id, sub in sub_map.items() %}
+                        <tr class="hover:bg-slate-850/50 transition">
+                            <td class="py-2 px-3">
+                                {% if sub.round == 1 %}
+                                <span class="text-yellow-400">R1 (Python)</span>
+                                {% else %}
+                                <span class="text-red-400">R2 (Java)</span>
+                                {% endif %}
+                            </td>
+                            <td class="py-2 px-3 font-sans text-slate-200">
+                                {{ sub.question.title if sub.question else 'Q#' ~ sub.question_id }}
+                            </td>
+                            <td class="py-2 px-3">
+                                {% if sub.status == 'passed' %}
+                                <span class="text-emerald-400 font-bold">Passed</span>
+                                {% elif sub.status == 'partial' %}
+                                <span class="text-amber-400 font-bold">Partial</span>
+                                {% else %}
+                                <span class="text-rose-400">Failed</span>
+                                {% endif %}
+                            </td>
+                            <td class="py-2 px-3 text-slate-400">
+                                {% if sub.round == 2 %}
+                                {{ sub.errors_fixed_count }} / 7
+                                {% else %}
+                                {{ '1 / 1' if sub.status == 'passed' else '0 / 1' }}
+                                {% endif %}
+                            </td>
+                            <td class="py-2 px-3 font-bold text-white">
+                                {{ sub.score }} pts
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="py-4 text-center text-slate-500 italic">No submissions recorded.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% if not allow_review %}
+            <div class="mt-3 p-3 rounded bg-slate-950/60 border border-slate-800 text-[11px] text-slate-500 italic text-center">
+                <i class="fa-solid fa-lock text-slate-600 mr-1"></i>
+                Detailed code solutions will be released once all competitors finish and the administrator enables Answer Review.
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Action Footer -->
+        <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-800 no-print">
+            <a href="{{ url_for('participant.index') }}" class="text-sm font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5">
+                <i class="fa-solid fa-house text-xs"></i>
+                Return to Home
+            </a>
+
+            <a href="{{ url_for('participant.leaderboard') }}" class="px-6 py-2.5 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 shadow-lg shadow-amber-500/20 transition flex items-center gap-2">
+                <i class="fa-solid fa-trophy text-xs"></i>
+                View Official Leaderboard
+            </a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+
+{% block title %}Round 2: Java Debugging | CoderesQ{% endblock %}
+
+{% block head %}
+<!-- Monaco Editor Loader -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="flex flex-col h-[calc(100vh-65px)] overflow-hidden bg-slate-950">
+
+    <!-- Challenge Top Bar -->
+    <div class="bg-slate-900 border-b border-slate-800 px-4 py-2.5 flex items-center justify-between z-10 flex-shrink-0">
+        <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2 px-2.5 py-1 rounded bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-mono font-bold">
+                <i class="fa-brands fa-java text-base"></i>
+                ROUND 2 &bull; JAVA DEBUGGING
+            </div>
+            <span id="q-indicator" class="text-sm font-semibold text-slate-300 font-mono">
+                Question 1 / {{ questions|length }}
+            </span>
+        </div>
+
+        <div class="flex items-center gap-6">
+            <!-- 7 Errors Fixed Visual Meter -->
+            <div class="flex items-center gap-3 bg-slate-950 px-3.5 py-1 rounded-xl border border-slate-800">
+                <div class="flex flex-col">
+                    <span class="text-[10px] uppercase font-mono text-slate-400 font-semibold">Errors Fixed</span>
+                    <span id="errors-fixed-counter" class="text-xs font-mono font-bold text-rose-400">0 / 7</span>
+                </div>
+                <!-- 7 Dot Badges -->
+                <div id="error-badges-container" class="flex items-center gap-1.5">
+                    <!-- Badges 1-7 rendered dynamically by JS -->
+                </div>
+            </div>
+
+            <!-- Score Counter -->
+            <div class="flex items-center gap-2 text-xs font-mono">
+                <span class="text-slate-400">Round 2 Score:</span>
+                <span id="r2-score-display" class="px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-500/40 font-bold text-sm">
+                    {{ participant.r2_score }}
+                </span>
+                <span class="text-slate-500">/ 70</span>
+            </div>
+
+            <!-- Countdown Timer -->
+            <div class="flex items-center gap-2 px-3 py-1 rounded-lg bg-slate-950 border border-slate-800 shadow-inner">
+                <i class="fa-regular fa-clock text-xs text-slate-400"></i>
+                <span id="competition-timer" class="font-mono text-sm font-bold tracking-wider text-emerald-400">
+                    --:--
+                </span>
+            </div>
+
+            <!-- Finish Challenge Button -->
+            <form id="finish-r2-form" action="{{ url_for('competition.finish_round2') }}" method="POST" class="inline m-0">
+                <button type="submit" onclick="return confirm('Are you sure you want to finalize the challenge and submit all results?');"
+                    class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 shadow transition flex items-center gap-1.5">
+                    <span>Submit &amp; Finish</span>
+                    <i class="fa-solid fa-trophy text-[10px]"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- IDE Body: Split Layout -->
+    <div class="flex-1 flex overflow-hidden">
+        
+        <!-- Left Panel: Problem Description & Question Navigator -->
+        <div class="w-2/5 border-r border-slate-800/80 bg-slate-900/60 flex flex-col overflow-hidden">
+            <!-- Question Metadata Header -->
+            <div class="p-4 border-b border-slate-800 bg-slate-900/90 flex-shrink-0">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="px-2 py-0.5 rounded text-[11px] font-mono font-semibold bg-red-950/80 text-red-300 border border-red-500/30">
+                        7 Intentional Bugs
+                    </span>
+                    <div class="flex items-center gap-2 text-xs font-mono">
+                        <span id="q-difficulty" class="px-2 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-500/30 font-bold">HARD</span>
+                        <span id="q-points" class="text-indigo-400 font-bold">14 Marks</span>
+                    </div>
+                </div>
+                <h2 id="q-title" class="text-base font-bold text-white tracking-wide">
+                    Question Title
+                </h2>
+            </div>
+
+            <!-- Question Description Scrollable Area -->
+            <div class="flex-1 p-4 overflow-y-auto space-y-4 text-sm text-slate-300 leading-relaxed">
+                <div>
+                    <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Architecture &amp; System Overview</h3>
+                    <p id="q-description" class="whitespace-pre-line text-slate-200"></p>
+                </div>
+
+                <div class="p-3.5 rounded-lg bg-slate-950/80 border border-slate-800 text-xs text-slate-400 space-y-2">
+                    <div class="font-semibold text-indigo-300 flex items-center gap-1.5">
+                        <i class="fa-solid fa-lightbulb"></i>
+                        The 7 Error Distribution Categories:
+                    </div>
+                    <ul class="space-y-1 list-disc list-inside text-[11px]">
+                        <li>Variable declaration / Type mismatch</li>
+                        <li>Method signature / Visibility modifier</li>
+                        <li>Loop condition / Off-by-one boundary</li>
+                        <li>Array / Collection indexing &amp; mutation</li>
+                        <li>Conditional logic / String equality</li>
+                        <li>Object-oriented programming (OOP / Constructor)</li>
+                        <li>Java API usage / Exception handling</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Question Navigator (5 Cards) -->
+            <div class="p-3 border-t border-slate-800 bg-slate-950/80 flex-shrink-0">
+                <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center justify-between">
+                    <span>Java Questions (1 - {{ questions|length }})</span>
+                    <span class="text-[10px] text-slate-500 font-mono">14 Marks Each</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    {% for q in questions %}
+                    <button id="nav-btn-{{ loop.index0 }}" onclick="loadQuestion({{ loop.index0 }})"
+                        class="q-pill flex-1 h-10 rounded-lg font-mono text-sm font-bold flex items-center justify-center bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white transition">
+                        Q{{ q.order_num }}
+                    </button>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel: Code Editor & Execution Terminal -->
+        <div class="w-3/5 flex flex-col bg-slate-950 overflow-hidden">
+            <!-- Editor Controls Toolbar -->
+            <div class="bg-slate-900 border-b border-slate-800 px-4 py-2 flex items-center justify-between flex-shrink-0">
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-mono text-slate-400 flex items-center gap-1.5">
+                        <i class="fa-brands fa-java text-red-400"></i>
+                        <span>Solution.java</span>
+                    </span>
+                    <span class="text-[11px] text-rose-400/80 font-mono italic">(7 Errors to Resolve)</span>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button id="btn-reset" title="Reset code to original"
+                        class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition flex items-center gap-1">
+                        <i class="fa-solid fa-rotate-left text-[11px]"></i>
+                        Reset
+                    </button>
+
+                    <button id="btn-run"
+                        class="px-3.5 py-1 rounded bg-indigo-600/80 hover:bg-indigo-600 text-white text-xs font-semibold transition flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-microchip text-[10px]"></i>
+                        Analyze Code
+                    </button>
+
+                    <button id="btn-submit"
+                        class="px-4 py-1 rounded bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md hover:shadow-emerald-500/25">
+                        <i class="fa-solid fa-check text-[11px]"></i>
+                        Submit Solution
+                    </button>
+                </div>
+            </div>
+
+            <!-- Monaco Editor Container -->
+            <div id="monaco-editor-container" class="flex-1 w-full bg-[#1e1e1e]"></div>
+
+            <!-- Bottom Console / Error Status Window -->
+            <div class="h-44 border-t border-slate-800 bg-[#0a0e17] flex flex-col flex-shrink-0">
+                <div class="bg-slate-900/90 border-b border-slate-800 px-4 py-1.5 flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-2 font-mono text-slate-400">
+                        <i class="fa-solid fa-bug text-red-400 text-xs"></i>
+                        <span>Bug Analysis &amp; Diagnostic Output</span>
+                    </div>
+
+                    <!-- Next / Prev Question Navigator Buttons -->
+                    <div class="flex items-center gap-2">
+                        <button id="btn-prev" class="px-2.5 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-mono transition">
+                            &larr; Prev
+                        </button>
+                        <button id="btn-next" class="px-2.5 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-mono transition">
+                            Next &rarr;
+                        </button>
+                    </div>
+                </div>
+
+                <div id="output-terminal" class="flex-1 p-3 overflow-y-auto terminal-output text-slate-300">
+                    <span class="text-slate-500">Run code or submit solution to evaluate resolved Java errors...</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    window.CURRENT_ROUND = 2;
+    window.QUESTIONS_DATA = {{ q_data_json | tojson }};
+    const REMAINING_SECONDS = {{ remaining_seconds }};
+</script>
+<script src="{{ url_for('static', filename='js/anti_cheat.js') }}"></script>
+<script src="{{ url_for('static', filename='js/timer.js') }}"></script>
+<script src="{{ url_for('static', filename='js/ide_round2.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        initCompetitionTimer(REMAINING_SECONDS, 'finish-r2-form');
+    });
+</script>
+{% endblock %}

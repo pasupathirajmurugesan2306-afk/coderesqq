@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CoderesQ Admin Console{% endblock %}</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            950: '#070a12',
+                            900: '#0b0f19',
+                            850: '#0f172a',
+                            800: '#1e293b'
+                        }
+                    },
+                    fontFamily: {
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-[#0b0f19] text-slate-100 min-h-screen flex flex-col font-sans selection:bg-indigo-500/30 selection:text-indigo-200">
+
+    <div class="flex flex-1 min-h-screen">
+        <!-- Admin Sidebar -->
+        <aside class="w-64 bg-slate-950 border-r border-slate-800 flex flex-col flex-shrink-0">
+            <!-- Sidebar Brand Header -->
+            <div class="h-16 border-b border-slate-800 px-6 flex items-center justify-between">
+                <a href="{{ url_for('admin.dashboard') }}" class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded bg-indigo-600 flex items-center justify-center text-white text-xs font-bold shadow-md">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <span class="font-bold tracking-wider text-base text-white">CODERESQ</span>
+                    <span class="text-[9px] font-mono font-semibold uppercase bg-indigo-950 text-indigo-400 border border-indigo-500/40 px-1.5 py-0.5 rounded">ADMIN</span>
+                </a>
+            </div>
+
+            <!-- Sidebar Navigation Links -->
+            <nav class="p-4 space-y-1 text-xs font-semibold flex-1">
+                <a href="{{ url_for('admin.dashboard') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition {% if request.endpoint == 'admin.dashboard' %}bg-indigo-600 text-white shadow-md{% endif %}">
+                    <i class="fa-solid fa-gauge-high w-4 text-center"></i>
+                    Dashboard
+                </a>
+
+                <a href="{{ url_for('admin.questions') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition {% if 'admin.questions' in request.endpoint or 'question' in request.endpoint %}bg-indigo-600 text-white shadow-md{% endif %}">
+                    <i class="fa-solid fa-code w-4 text-center"></i>
+                    Manage Questions
+                </a>
+
+                <a href="{{ url_for('admin.participants') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition {% if request.endpoint == 'admin.participants' %}bg-indigo-600 text-white shadow-md{% endif %}">
+                    <i class="fa-solid fa-users w-4 text-center"></i>
+                    Participants
+                </a>
+
+                <a href="{{ url_for('admin.submissions') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition {% if request.endpoint == 'admin.submissions' %}bg-indigo-600 text-white shadow-md{% endif %}">
+                    <i class="fa-solid fa-file-code w-4 text-center"></i>
+                    Submissions
+                </a>
+
+                <a href="{{ url_for('admin.anti_cheat_logs') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition {% if request.endpoint == 'admin.anti_cheat_logs' %}bg-indigo-600 text-white shadow-md{% endif %}">
+                    <i class="fa-solid fa-triangle-exclamation w-4 text-center text-rose-400"></i>
+                    Anti-Cheat Logs
+                </a>
+
+                <a href="{{ url_for('admin.settings') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition {% if request.endpoint == 'admin.settings' %}bg-indigo-600 text-white shadow-md{% endif %}">
+                    <i class="fa-solid fa-sliders w-4 text-center"></i>
+                    Competition Settings
+                </a>
+
+                <div class="pt-4 border-t border-slate-800/80 my-2"></div>
+
+                <a href="{{ url_for('participant.leaderboard') }}" target="_blank" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-amber-300 hover:bg-amber-950/30 transition">
+                    <i class="fa-solid fa-trophy w-4 text-center"></i>
+                    Live Leaderboard
+                </a>
+
+                <a href="{{ url_for('participant.index') }}" target="_blank" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-900 transition">
+                    <i class="fa-solid fa-arrow-up-right-from-square w-4 text-center"></i>
+                    Candidate Portal
+                </a>
+            </nav>
+
+            <!-- Sidebar User Strip -->
+            <div class="p-4 border-t border-slate-800 bg-slate-950/60 flex items-center justify-between text-xs">
+                <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 font-bold font-mono">
+                        A
+                    </div>
+                    <span class="font-mono text-slate-300">{{ session.get('admin_username', 'admin') }}</span>
+                </div>
+                <a href="{{ url_for('auth.admin_logout') }}" title="Logout" class="text-rose-400 hover:text-rose-300">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Admin Main Content Area -->
+        <div class="flex-1 flex flex-col overflow-y-auto">
+            <!-- Flash Alerts -->
+            <div class="p-4 w-full">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="mb-3 p-3.5 rounded-lg text-xs flex items-center gap-3 border backdrop-blur-md
+                                {% if category == 'success' %} bg-emerald-950/80 text-emerald-200 border-emerald-500/50
+                                {% elif category == 'error' %} bg-rose-950/80 text-rose-200 border-rose-500/50
+                                {% elif category == 'warning' %} bg-amber-950/80 text-amber-200 border-amber-500/50
+                                {% else %} bg-indigo-950/80 text-indigo-200 border-indigo-500/50 {% endif %}">
+                                <i class="fa-solid {% if category == 'success' %}fa-circle-check text-emerald-400{% elif category == 'error' %}fa-circle-xmark text-rose-400{% else %}fa-triangle-exclamation text-amber-400{% endif %}"></i>
+                                <span class="font-medium">{{ message }}</span>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

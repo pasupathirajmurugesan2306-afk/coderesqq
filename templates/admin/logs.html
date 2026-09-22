@@ -1,0 +1,67 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block title %}Suspicious Activity Logs | CoderesQ Admin{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-extrabold text-white">Anti-Cheat Integrity Audit Log</h1>
+            <p class="text-xs text-slate-400 mt-0.5">Real-time log of tab-switches, window blurs, shortcuts, and unauthorized operations</p>
+        </div>
+        <span class="text-xs font-mono text-slate-500">Showing Last {{ logs|length }} Events</span>
+    </div>
+
+    <!-- Logs Table Card -->
+    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+                <thead class="bg-slate-950 text-slate-400 uppercase font-mono border-b border-slate-800">
+                    <tr>
+                        <th class="py-3 px-4 w-40">Timestamp</th>
+                        <th class="py-3 px-4">Candidate</th>
+                        <th class="py-3 px-4">Institution</th>
+                        <th class="py-3 px-4">Suspicious Event</th>
+                        <th class="py-3 px-4">Telemetry Details</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/60 font-mono">
+                    {% for log in logs %}
+                    <tr class="hover:bg-slate-850/50 transition">
+                        <td class="py-3 px-4 text-slate-400">
+                            {{ log.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}
+                        </td>
+
+                        <td class="py-3 px-4 font-sans">
+                            <div class="font-bold text-slate-100">{{ log.participant.name if log.participant else 'Unknown Candidate' }}</div>
+                            <div class="text-[11px] font-mono text-indigo-400">{{ log.participant.participant_id if log.participant else 'N/A' }}</div>
+                        </td>
+
+                        <td class="py-3 px-4 font-sans text-slate-300">
+                            {{ log.participant.college if log.participant else 'N/A' }}
+                        </td>
+
+                        <td class="py-3 px-4">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-rose-950/80 text-rose-300 border border-rose-500/40 inline-flex items-center gap-1.5">
+                                <i class="fa-solid fa-triangle-exclamation text-[10px] text-rose-400"></i>
+                                {{ log.event }}
+                            </span>
+                        </td>
+
+                        <td class="py-3 px-4 text-slate-400">
+                            {{ log.details or '-' }}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="py-8 text-center text-slate-500 font-sans italic">
+                            No suspicious activity logs detected yet. Candidates are observing competition rules.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

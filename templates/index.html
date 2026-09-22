@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}CoderesQ | Code. Debug. Conquer.{% endblock %}
+
+{% block content %}
+<div class="relative overflow-hidden flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <!-- Cyberpunk grid background glow -->
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_10%,rgba(99,102,241,0.15),transparent_50%)] pointer-events-none"></div>
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-5xl mx-auto text-center relative z-10">
+        <!-- Badge -->
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-950/40 text-indigo-300 text-xs font-mono uppercase tracking-widest mb-6 backdrop-blur-md">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            National Code Debugging Championship 2026
+        </div>
+
+        <!-- Headline -->
+        <h1 class="text-5xl sm:text-7xl font-extrabold tracking-tight text-white mb-4">
+            <span class="bg-gradient-to-r from-white via-indigo-200 to-purple-400 bg-clip-text text-transparent">
+                CODERESQ
+            </span>
+        </h1>
+
+        <!-- Taglines -->
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-wide text-indigo-400 font-mono mb-3">
+            Code. Debug. Conquer.
+        </h2>
+        <p class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto font-light mb-8">
+            “Find the bug. Fix the code. Prove your skills.”
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-wrap items-center justify-center gap-4 mb-16">
+            <a href="{{ url_for('participant.register') }}" class="px-8 py-3.5 rounded-xl font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 shadow-xl shadow-indigo-600/30 transform hover:-translate-y-0.5 transition-all flex items-center gap-2">
+                <i class="fa-solid fa-play text-sm"></i>
+                Start Challenge
+            </a>
+            <a href="{{ url_for('participant.rules') }}" class="px-8 py-3.5 rounded-xl font-semibold text-slate-200 bg-slate-900/80 hover:bg-slate-800 border border-slate-700/80 hover:border-slate-600 transition-all flex items-center gap-2">
+                <i class="fa-solid fa-book-open text-indigo-400 text-sm"></i>
+                Competition Rules
+            </a>
+            <a href="{{ url_for('participant.leaderboard') }}" class="px-6 py-3.5 rounded-xl font-semibold text-amber-300 bg-amber-950/30 hover:bg-amber-950/50 border border-amber-500/40 transition-all flex items-center gap-2">
+                <i class="fa-solid fa-trophy text-sm"></i>
+                View Leaderboard
+            </a>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto mb-16">
+            <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800/80 backdrop-blur-sm">
+                <div class="text-2xl sm:text-3xl font-extrabold font-mono text-indigo-400">2</div>
+                <div class="text-xs text-slate-400 uppercase tracking-wider mt-1">Rigorous Rounds</div>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800/80 backdrop-blur-sm">
+                <div class="text-2xl sm:text-3xl font-extrabold font-mono text-cyan-400">25</div>
+                <div class="text-xs text-slate-400 uppercase tracking-wider mt-1">Total Challenges</div>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800/80 backdrop-blur-sm">
+                <div class="text-2xl sm:text-3xl font-extrabold font-mono text-purple-400">55</div>
+                <div class="text-xs text-slate-400 uppercase tracking-wider mt-1">Bugs to Conquer</div>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800/80 backdrop-blur-sm">
+                <div class="text-2xl sm:text-3xl font-extrabold font-mono text-emerald-400">{{ total_participants }}</div>
+                <div class="text-xs text-slate-400 uppercase tracking-wider mt-1">Participants</div>
+            </div>
+        </div>
+
+        <!-- Two Rounds Overview Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto text-left">
+            <!-- Round 1 Card -->
+            <div class="relative group rounded-2xl p-6 bg-gradient-to-b from-slate-900/90 to-slate-950 border border-indigo-500/20 hover:border-indigo-500/50 transition-all shadow-xl">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-indigo-950 text-indigo-300 border border-indigo-500/30">
+                        ROUND 1
+                    </span>
+                    <span class="text-xs text-slate-400 font-mono flex items-center gap-1">
+                        <i class="fa-solid fa-clock text-indigo-400"></i> {{ comp.r1_duration_minutes if comp else 30 }} Minutes
+                    </span>
+                </div>
+                <div class="flex items-center gap-3 mb-3">
+                    <i class="fa-brands fa-python text-3xl text-yellow-400"></i>
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Python Debugging</h3>
+                        <p class="text-xs text-slate-400">Medium to Hard &bull; 20 Questions</p>
+                    </div>
+                </div>
+                <p class="text-sm text-slate-300 leading-relaxed mb-4">
+                    Each problem contains <strong class="text-amber-300 font-semibold">strictly ONE intentional error</strong>. Spot logical flaws, runtime exceptions, recursive traps, dictionary mutations, or subtle scoping bugs.
+                </p>
+                <div class="flex items-center justify-between pt-4 border-t border-slate-800 text-xs">
+                    <span class="text-slate-400">Scoring: <strong>{{ comp.r1_points_per_question if comp else 5 }} pts / question</strong></span>
+                    <span class="font-mono text-emerald-400 font-bold">Max: 100 Marks</span>
+                </div>
+            </div>
+
+            <!-- Round 2 Card -->
+            <div class="relative group rounded-2xl p-6 bg-gradient-to-b from-slate-900/90 to-slate-950 border border-purple-500/20 hover:border-purple-500/50 transition-all shadow-xl">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-purple-950 text-purple-300 border border-purple-500/30">
+                        ROUND 2
+                    </span>
+                    <span class="text-xs text-slate-400 font-mono flex items-center gap-1">
+                        <i class="fa-solid fa-clock text-purple-400"></i> {{ comp.r2_duration_minutes if comp else 30 }} Minutes
+                    </span>
+                </div>
+                <div class="flex items-center gap-3 mb-3">
+                    <i class="fa-brands fa-java text-3xl text-red-400"></i>
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Java Debugging</h3>
+                        <p class="text-xs text-slate-400">Hard &bull; 5 Complex Systems</p>
+                    </div>
+                </div>
+                <p class="text-sm text-slate-300 leading-relaxed mb-4">
+                    Each program contains <strong class="text-rose-400 font-semibold">exactly 7 intentional errors</strong>. Fix OOP flaws, typing errors, concurrency traps, loop boundaries, and Java API exceptions.
+                </p>
+                <div class="flex items-center justify-between pt-4 border-t border-slate-800 text-xs">
+                    <span class="text-slate-400">Scoring: <strong>{{ comp.r2_points_per_error if comp else 2 }} pts / error</strong></span>
+                    <span class="font-mono text-emerald-400 font-bold">Max: 70 Marks</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

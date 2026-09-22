@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+
+{% block title %}Championship Leaderboard | CoderesQ{% endblock %}
+
+{% block content %}
+<div class="flex-1 max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8 w-full">
+    
+    <!-- Title and Stats Header -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+        <div>
+            <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full border border-amber-500/30 bg-amber-950/40 text-amber-300 text-xs font-mono uppercase tracking-wider mb-2">
+                <i class="fa-solid fa-crown text-[10px]"></i> Live Standings
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+                Championship Leaderboard
+            </h1>
+            <p class="text-sm text-slate-400 mt-1">
+                Ranked by Total Score (Highest First) and Elapsed Duration (Fastest First)
+            </p>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <a href="{{ url_for('participant.leaderboard') }}" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 transition flex items-center gap-1.5">
+                <i class="fa-solid fa-arrows-rotate text-xs"></i>
+                Refresh
+            </a>
+            {% if session.get('participant_id') %}
+            <a href="{{ url_for('participant.result') }}" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-indigo-600/80 hover:bg-indigo-600 text-white transition">
+                View My Result
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Filters Strip -->
+    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 mb-6 backdrop-blur-md">
+        <form method="GET" action="{{ url_for('participant.leaderboard') }}" class="grid grid-cols-1 sm:grid-cols-4 gap-4 items-end">
+            <div>
+                <label for="college" class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Filter by College</label>
+                <select name="college" id="college" onchange="this.form.submit()"
+                    class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+                    <option value="all" {% if active_college == 'all' %}selected{% endif %}>All Colleges</option>
+                    {% for c in colleges %}
+                    <option value="{{ c }}" {% if active_college == c %}selected{% endif %}>{{ c }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label for="department" class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Filter by Department</label>
+                <select name="department" id="department" onchange="this.form.submit()"
+                    class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+                    <option value="all" {% if active_dept == 'all' %}selected{% endif %}>All Departments</option>
+                    {% for d in departments %}
+                    <option value="{{ d }}" {% if active_dept == d %}selected{% endif %}>{{ d }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label for="round" class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Filter by Round</label>
+                <select name="round" id="round" onchange="this.form.submit()"
+                    class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+                    <option value="total" {% if active_round == 'total' %}selected{% endif %}>Total Score (R1 + R2)</option>
+                    <option value="round1" {% if active_round == 'round1' %}selected{% endif %}>Round 1 (Python Only)</option>
+                    <option value="round2" {% if active_round == 'round2' %}selected{% endif %}>Round 2 (Java Only)</option>
+                </select>
+            </div>
+
+            <div>
+                <a href="{{ url_for('participant.leaderboard') }}" class="w-full py-2 px-3 rounded-lg text-xs font-semibold text-slate-400 hover:text-white bg-slate-950 hover:bg-slate-800 border border-slate-800 text-center block transition">
+                    Clear Filters
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Leaderboard Table Card -->
+    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl shadow-xl overflow-hidden backdrop-blur-md">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+                <thead class="bg-slate-950/90 border-b border-slate-800 text-xs font-mono uppercase tracking-wider text-slate-400">
+                    <tr>
+                        <th class="py-3.5 px-4 w-16 text-center">Rank</th>
+                        <th class="py-3.5 px-4">Participant</th>
+                        <th class="py-3.5 px-4">College</th>
+                        <th class="py-3.5 px-4 text-center">Round 1 (Py)</th>
+                        <th class="py-3.5 px-4 text-center">Round 2 (Java)</th>
+                        <th class="py-3.5 px-4 text-center">Total Score</th>
+                        <th class="py-3.5 px-4 text-center">Time Taken</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/60 font-mono text-xs">
+                    {% for p in participants %}
+                    <tr class="hover:bg-slate-850/60 transition {% if session.get('participant_id') == p.participant_id %}bg-indigo-950/40 border-l-4 border-indigo-500{% endif %}">
+                        <!-- Rank -->
+                        <td class="py-3.5 px-4 text-center font-bold">
+                            {% if p.rank == 1 %}
+                            <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/50 shadow-sm text-sm">
+                                🥇
+                            </span>
+                            {% elif p.rank == 2 %}
+                            <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-slate-300/20 text-slate-200 border border-slate-400/50 shadow-sm text-sm">
+                                🥈
+                            </span>
+                            {% elif p.rank == 3 %}
+                            <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-amber-700/20 text-amber-500 border border-amber-600/50 shadow-sm text-sm">
+                                🥉
+                            </span>
+                            {% else %}
+                            <span class="text-slate-400">#{{ p.rank }}</span>
+                            {% endif %}
+                        </td>
+
+                        <!-- Participant -->
+                        <td class="py-3.5 px-4 font-sans">
+                            <div class="font-bold text-slate-100 flex items-center gap-2">
+                                <span>{{ p.name }}</span>
+                                {% if session.get('participant_id') == p.participant_id %}
+                                <span class="px-1.5 py-0.2 rounded text-[10px] font-mono bg-indigo-900 text-indigo-300 border border-indigo-500/40 uppercase">You</span>
+                                {% endif %}
+                            </div>
+                            <div class="text-[11px] font-mono text-slate-500">
+                                {{ p.participant_id }} &bull; {{ p.department }}
+                            </div>
+                        </td>
+
+                        <!-- College -->
+                        <td class="py-3.5 px-4 font-sans text-slate-300">
+                            {{ p.college }}
+                        </td>
+
+                        <!-- Round 1 -->
+                        <td class="py-3.5 px-4 text-center text-yellow-400 font-bold">
+                            {{ p.r1_score }}
+                        </td>
+
+                        <!-- Round 2 -->
+                        <td class="py-3.5 px-4 text-center text-red-400 font-bold">
+                            {{ p.r2_score }}
+                        </td>
+
+                        <!-- Total Score -->
+                        <td class="py-3.5 px-4 text-center font-bold text-sm text-emerald-400">
+                            {{ p.total_score }}
+                        </td>
+
+                        <!-- Time -->
+                        <td class="py-3.5 px-4 text-center text-slate-400">
+                            {{ p.formatted_time }}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="7" class="py-8 text-center text-slate-500 font-sans italic">
+                            No submissions recorded matching the selected filter criteria.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
