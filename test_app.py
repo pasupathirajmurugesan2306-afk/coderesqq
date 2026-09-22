@@ -4,6 +4,7 @@ from app import create_app
 from models import db, Admin, Competition, Question, JavaError, Participant, Submission, SuspiciousActivity
 from services.code_evaluator import run_python_code, evaluate_java_code
 
+TEST_ADMIN_PASSWORD = "TestAdminPassword123!"
 class CoderesQTestCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app()
@@ -20,7 +21,7 @@ class CoderesQTestCase(unittest.TestCase):
         """Verifies database seeding of Admin, Settings, and Questions."""
         admin = Admin.query.filter_by(username='admin').first()
         self.assertIsNotNone(admin, "Default admin must exist")
-        self.assertTrue(admin.check_password('CoderesQ@Admin2026'), "Admin password must match")
+        self.assertTrue(admin.check_password(TEST_ADMIN_PASSWORD), "Admin password must match")
 
         comp = Competition.query.first()
         self.assertIsNotNone(comp, "Competition settings must exist")
@@ -143,7 +144,7 @@ class CoderesQTestCase(unittest.TestCase):
         # 1. Login
         login_resp = self.client.post('/admin/login', data={
             'username': 'admin',
-            'password': 'CoderesQ@Admin2026'
+            'password': TEST_ADMIN_PASSWORD
         }, follow_redirects=True)
         self.assertEqual(login_resp.status_code, 200)
         self.assertIn(b'Command Center', login_resp.data)

@@ -1,3 +1,4 @@
+import os
 import json
 from models import db, Question, JavaError, Admin, Competition, Participant
 
@@ -683,10 +684,12 @@ def seed_database():
     # 1. Seed Admin
     admin = Admin.query.filter_by(username='admin').first()
     if not admin:
-        admin = Admin(username='admin')
-        admin.set_password('CoderesQ@Admin2026')
-        db.session.add(admin)
-        print("Created default admin user: 'admin'")
+        admin_password = os.environ.get("ADMIN_PASSWORD")
+
+if not admin_password:
+    raise RuntimeError("ADMIN_PASSWORD environment variable is not set")
+
+admin.set_password(admin_password)
 
     # 2. Seed Competition Settings
     comp = Competition.query.first()
