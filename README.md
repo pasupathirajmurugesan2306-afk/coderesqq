@@ -94,9 +94,9 @@ Open your web browser and navigate to:
 * **Leaderboard:** [http://127.0.0.1:5000/leaderboard](http://127.0.0.1:5000/leaderboard)
 * **Admin Console:** [http://127.0.0.1:5000/admin/login](http://127.0.0.1:5000/admin/login)
 
-### Default Administrator Credentials:
-* **Username:** `admin`
-* **Password:** `CoderesQ@Admin2026`
+### Administrator Credentials
+
+Administrator credentials are configured securely and are not included in this repository.
 
 ---
 

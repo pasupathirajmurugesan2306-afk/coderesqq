@@ -10,6 +10,5 @@ if __name__ == '__main__':
     print(f" * Candidate Web Portal: http://127.0.0.1:{port}/")
     print(f" * Live Leaderboard:     http://127.0.0.1:{port}/leaderboard")
     print(f" * Admin Console:        http://127.0.0.1:{port}/admin/login")
-    print(f" * Admin Credentials:    admin / CoderesQ@Admin2026")
     print("=" * 65)
     app.run(host='0.0.0.0', port=port, debug=False)
