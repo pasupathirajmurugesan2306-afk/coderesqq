@@ -682,16 +682,19 @@ def get_java_questions():
 def seed_database():
     """Seeds the database with initial Admin, Competition settings, and all 25 questions."""
     # 1. Seed Admin
+    # Create default admin
     admin = Admin.query.filter_by(username='admin').first()
+
     if not admin:
+        admin = Admin(username='admin')
+
         admin_password = os.environ.get("ADMIN_PASSWORD")
+        if not admin_password:
+            raise RuntimeError("ADMIN_PASSWORD environment variable is not set")
 
-if not admin_password:
-    raise RuntimeError("ADMIN_PASSWORD environment variable is not set")
+        admin.set_password(admin_password)
+        db.session.add(admin)
 
-admin.set_password(admin_password)
-
-    # 2. Seed Competition Settings
     comp = Competition.query.first()
     if not comp:
         comp = Competition(
