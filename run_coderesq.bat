@@ -1,6 +1,8 @@
 @echo off
 title CoderesQ Debugging Platform
-cd /d "C:\Users\Laptop\.gemini\antigravity\scratch\coderesq"
+cd /d "%~dp0"
+set SECRET_KEY="coderesq-secret"
+set ADMIN_PASSWORD="password"
 echo Starting CoderesQ...
 python run.py
 pause
