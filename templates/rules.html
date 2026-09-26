@@ -27,10 +27,10 @@
                     <h3 class="text-lg font-bold text-white">Python Debugging (5 Questions)</h3>
                 </div>
                 <ul class="space-y-2 text-sm text-slate-300 list-disc list-inside">
-                    <li><strong class="text-white">Medium to Hard difficulty</strong> covering syntax, logical traps, scoping, recursion, and exceptions.</li>
-                    <li><strong class="text-amber-400">Strictly ONE intentional error</strong> is present in each question. Do not introduce secondary changes.</li>
+                    <li><strong class="text-white">Basic to Medium difficulty</strong> covering Python fundamentals and standard logic.</li>
+                    <li><strong class="text-amber-400">Identify and resolve the bugs</strong> in the provided Python code snippets.</li>
                     <li>Time limit: <strong class="text-indigo-300 font-mono">{{ comp.r1_duration_minutes if comp else 30 }} Minutes</strong>. The countdown begins upon entering.</li>
-                    <li>Scoring: <strong class="text-emerald-400 font-mono">{{ comp.r1_points_per_question if comp else 5 }} marks per question</strong> (Total: 50 Marks).</li>
+                    <li>Scoring: <strong class="text-emerald-400 font-mono">10 marks per question</strong> (Total: 50 Marks).</li>
                     <li>Test your code with the <strong>Run Code</strong> button before official submission.</li>
                 </ul>
             </div>
@@ -44,11 +44,11 @@
                     <h3 class="text-lg font-bold text-white">Multi-Language Debugging (2 Complex Problems)</h3>
                 </div>
                 <ul class="space-y-2 text-sm text-slate-300 list-disc list-inside">
-                    <li><strong class="text-white">Hard difficulty</strong> algorithms and real-world system implementations.</li>
-                    <li>Each program contains multiple intentional errors (syntax and logic).</li>
-                    <li>You can select either Java or Python track. Solve the problems in your chosen language.</li>
+                    <li><strong class="text-white">Medium difficulty</strong> involving arrays and string manipulation (e.g., Finding Second Largest, Counting Vowels).</li>
+                    <li>Each program contains <strong class="text-rose-400 font-semibold">multiple intentional errors</strong> (missing syntax, incorrect logic, wrong bounds).</li>
+                    <li>Track Selection: You must select either the <strong class="text-white">Java or Python</strong> track. Both tracks face identical challenges for fairness.</li>
                     <li>Time limit: <strong class="text-purple-300 font-mono">{{ comp.r2_duration_minutes if comp else 30 }} Minutes</strong>.</li>
-                    <li>Scoring: <strong class="text-emerald-400 font-mono">{{ comp.r2_points_per_error if comp else 2 }} marks per error resolved</strong> (25 marks/question &bull; Total: 50 Marks).</li>
+                    <li>Scoring: <strong class="text-emerald-400 font-mono">25 marks per question</strong>. Partial points are awarded dynamically based on how many bugs you resolve! (Total: 50 Marks).</li>
                 </ul>
             </div>
 
