@@ -53,11 +53,11 @@
                 <div class="text-xs text-slate-400 uppercase tracking-wider mt-1">Rigorous Rounds</div>
             </div>
             <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800/80 backdrop-blur-sm">
-                <div class="text-2xl sm:text-3xl font-extrabold font-mono text-cyan-400">25</div>
+                <div class="text-2xl sm:text-3xl font-extrabold font-mono text-cyan-400">7</div>
                 <div class="text-xs text-slate-400 uppercase tracking-wider mt-1">Total Challenges</div>
             </div>
             <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800/80 backdrop-blur-sm">
-                <div class="text-2xl sm:text-3xl font-extrabold font-mono text-purple-400">55</div>
+                <div class="text-2xl sm:text-3xl font-extrabold font-mono text-purple-400">12+</div>
                 <div class="text-xs text-slate-400 uppercase tracking-wider mt-1">Bugs to Conquer</div>
             </div>
             <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800/80 backdrop-blur-sm">
@@ -82,15 +82,15 @@
                     <i class="fa-brands fa-python text-3xl text-yellow-400"></i>
                     <div>
                         <h3 class="text-xl font-bold text-white">Python Debugging</h3>
-                        <p class="text-xs text-slate-400">Medium to Hard &bull; 20 Questions</p>
+                        <p class="text-xs text-slate-400">Basic to Medium &bull; 5 Questions</p>
                     </div>
                 </div>
                 <p class="text-sm text-slate-300 leading-relaxed mb-4">
                     Each problem contains <strong class="text-amber-300 font-semibold">strictly ONE intentional error</strong>. Spot logical flaws, runtime exceptions, recursive traps, dictionary mutations, or subtle scoping bugs.
                 </p>
                 <div class="flex items-center justify-between pt-4 border-t border-slate-800 text-xs">
-                    <span class="text-slate-400">Scoring: <strong>{{ comp.r1_points_per_question if comp else 5 }} pts / question</strong></span>
-                    <span class="font-mono text-emerald-400 font-bold">Max: 100 Marks</span>
+                    <span class="text-slate-400">Scoring: <strong>10 pts / question</strong></span>
+                    <span class="font-mono text-emerald-400 font-bold">Max: 50 Marks</span>
                 </div>
             </div>
 
@@ -105,18 +105,18 @@
                     </span>
                 </div>
                 <div class="flex items-center gap-3 mb-3">
-                    <i class="fa-brands fa-java text-3xl text-red-400"></i>
+                    <div class="flex gap-1"><i class="fa-brands fa-java text-3xl text-red-400"></i><i class="fa-brands fa-python text-3xl text-blue-400"></i></div>
                     <div>
-                        <h3 class="text-xl font-bold text-white">Java Debugging</h3>
-                        <p class="text-xs text-slate-400">Hard &bull; 5 Complex Systems</p>
+                        <h3 class="text-xl font-bold text-white">Multi-Track Debugging</h3>
+                        <p class="text-xs text-slate-400">Medium &bull; 2 Complex Systems</p>
                     </div>
                 </div>
                 <p class="text-sm text-slate-300 leading-relaxed mb-4">
-                    Each program contains <strong class="text-rose-400 font-semibold">exactly 7 intentional errors</strong>. Fix OOP flaws, typing errors, concurrency traps, loop boundaries, and Java API exceptions.
+                    Choose your preferred language (Java or Python). Each program contains <strong class="text-rose-400 font-semibold">multiple intentional errors</strong> (syntax and logic).
                 </p>
                 <div class="flex items-center justify-between pt-4 border-t border-slate-800 text-xs">
-                    <span class="text-slate-400">Scoring: <strong>{{ comp.r2_points_per_error if comp else 2 }} pts / error</strong></span>
-                    <span class="font-mono text-emerald-400 font-bold">Max: 70 Marks</span>
+                    <span class="text-slate-400">Scoring: <strong>25 pts / question</strong></span>
+                    <span class="font-mono text-emerald-400 font-bold">Max: 50 Marks</span>
                 </div>
             </div>
         </div>
