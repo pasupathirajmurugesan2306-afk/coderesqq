@@ -24,13 +24,13 @@
                     <span class="px-2.5 py-0.5 rounded text-xs font-mono font-bold bg-indigo-900/60 text-indigo-300 border border-indigo-500/40">
                         ROUND 1
                     </span>
-                    <h3 class="text-lg font-bold text-white">Python Debugging (20 Questions)</h3>
+                    <h3 class="text-lg font-bold text-white">Python Debugging (5 Questions)</h3>
                 </div>
                 <ul class="space-y-2 text-sm text-slate-300 list-disc list-inside">
                     <li><strong class="text-white">Medium to Hard difficulty</strong> covering syntax, logical traps, scoping, recursion, and exceptions.</li>
                     <li><strong class="text-amber-400">Strictly ONE intentional error</strong> is present in each question. Do not introduce secondary changes.</li>
                     <li>Time limit: <strong class="text-indigo-300 font-mono">{{ comp.r1_duration_minutes if comp else 30 }} Minutes</strong>. The countdown begins upon entering.</li>
-                    <li>Scoring: <strong class="text-emerald-400 font-mono">{{ comp.r1_points_per_question if comp else 5 }} marks per question</strong> (Total: 100 Marks).</li>
+                    <li>Scoring: <strong class="text-emerald-400 font-mono">{{ comp.r1_points_per_question if comp else 5 }} marks per question</strong> (Total: 50 Marks).</li>
                     <li>Test your code with the <strong>Run Code</strong> button before official submission.</li>
                 </ul>
             </div>
@@ -41,14 +41,14 @@
                     <span class="px-2.5 py-0.5 rounded text-xs font-mono font-bold bg-purple-900/60 text-purple-300 border border-purple-500/40">
                         ROUND 2
                     </span>
-                    <h3 class="text-lg font-bold text-white">Java Debugging (5 Complex Systems)</h3>
+                    <h3 class="text-lg font-bold text-white">Multi-Language Debugging (2 Complex Problems)</h3>
                 </div>
                 <ul class="space-y-2 text-sm text-slate-300 list-disc list-inside">
                     <li><strong class="text-white">Hard difficulty</strong> algorithms and real-world system implementations.</li>
-                    <li>Each Java program contains <strong class="text-rose-400 font-semibold">exactly 7 intentional errors</strong>.</li>
-                    <li>Errors cover: Variable declarations, method signatures, loops, collections, conditional logic, OOP, and Java exceptions.</li>
+                    <li>Each program contains multiple intentional errors (syntax and logic).</li>
+                    <li>You can select either Java or Python track. Solve the problems in your chosen language.</li>
                     <li>Time limit: <strong class="text-purple-300 font-mono">{{ comp.r2_duration_minutes if comp else 30 }} Minutes</strong>.</li>
-                    <li>Scoring: <strong class="text-emerald-400 font-mono">{{ comp.r2_points_per_error if comp else 2 }} marks per error resolved</strong> (14 marks/question &bull; Total: 70 Marks).</li>
+                    <li>Scoring: <strong class="text-emerald-400 font-mono">{{ comp.r2_points_per_error if comp else 2 }} marks per error resolved</strong> (25 marks/question &bull; Total: 50 Marks).</li>
                 </ul>
             </div>
 
