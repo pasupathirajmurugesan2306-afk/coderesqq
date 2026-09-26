@@ -6,123 +6,63 @@ def get_python_questions():
     return [
         {
             "order_num": 1,
-            "title": "Multiplication",
+            "title": "Number Threshold",
             "error_type": "Syntax Error",
             "difficulty": "Easy",
-            "points": 5.0,
-            "question_text": "The function multiply(a, b) should return the product of a and b. Find and fix the error.",
-            "buggy_code": "def multiply(a, b):\n    result = a x b\n    return result",
-            "correct_code": "def multiply(a, b):\n    result = a * b\n    return result",
-            "explanation": "The multiplication operator in Python is '*' not 'x'.",
-            "test_cases": [{"call": "multiply(5, 4)", "expected": 20}]
+            "points": 10.0,
+            "question_text": "Find and fix the error in the provided code snippet.",
+            "buggy_code": "numbers = [10, 20, 30, 40, 50]\n\nfor i in range(len(numbers)):\n    if numbers[i] > 25:\n        print(numbers[i])\n    else\n        print(\"Small\")",
+            "correct_code": "numbers = [10, 20, 30, 40, 50]\n\nfor i in range(len(numbers)):\n    if numbers[i] > 25:\n        print(numbers[i])\n    else:\n        print(\"Small\")",
+            "explanation": "A colon is required at the end of the else keyword.",
+            "test_cases": [{"call": "numbers[-1]", "expected": 50, "description": "Logic Check"}]
         },
         {
             "order_num": 2,
-            "title": "While loop execution",
-            "error_type": "Syntax Error",
+            "title": "Find the Largest",
+            "error_type": "Name Error",
             "difficulty": "Easy",
-            "points": 5.0,
-            "question_text": "The function print_1_to_5() should return a list of numbers from 1 to 5. Find and fix the error.",
-            "buggy_code": "def print_1_to_5():\n    result = []\n    i = 1\n    while i <= 5\n        result.append(i)\n        i += 1\n    return result",
-            "correct_code": "def print_1_to_5():\n    result = []\n    i = 1\n    while i <= 5:\n        result.append(i)\n        i += 1\n    return result",
-            "explanation": "A colon ':' is required at the end of the while loop statement.",
-            "test_cases": [{"call": "print_1_to_5()", "expected": [1, 2, 3, 4, 5]}]
+            "points": 10.0,
+            "question_text": "Find and fix the error in the provided code snippet.",
+            "buggy_code": "x = 10\ny = 20\nz = 30\n\nif x > y and x > z:\n    largest = x\nelif y > x and y > z:\n    largest = y\nelse:\n    largest = z\n\nprint(\"Largest:\", larges)",
+            "correct_code": "x = 10\ny = 20\nz = 30\n\nif x > y and x > z:\n    largest = x\nelif y > x and y > z:\n    largest = y\nelse:\n    largest = z\n\nprint(\"Largest:\", largest)",
+            "explanation": "The variable is correctly named largest, not larges.",
+            "test_cases": [{"call": "largest", "expected": 30, "description": "Variable Check"}]
         },
         {
             "order_num": 3,
-            "title": "Length of a string",
-            "error_type": "Name Error",
-            "difficulty": "Easy",
-            "points": 5.0,
-            "question_text": "The function get_length(name) should return the length of the string. Find and fix the error.",
-            "buggy_code": "def get_length(name):\n    return lenght(name)",
-            "correct_code": "def get_length(name):\n    return len(name)",
-            "explanation": "The correct function to get the length of an object is 'len()', not 'lenght()'.",
-            "test_cases": [{"call": "get_length(\"Python\")", "expected": 6}]
+            "title": "Count Vowels",
+            "error_type": "Logical Error",
+            "difficulty": "Medium",
+            "points": 10.0,
+            "question_text": "Find and fix the error in the provided code snippet.",
+            "buggy_code": "text = \"Python\"\ncount = 0\n\nfor char in text:\n    if char == \"a\" or \"e\" or \"i\" or \"o\" or \"u\":\n        count += 1\n\nprint(count)",
+            "correct_code": "text = \"Python\"\ncount = 0\n\nfor char in text:\n    if char in \"aeiou\":\n        count += 1\n\nprint(count)",
+            "explanation": "In Python, combining strings with OR will evaluate truthiness of strings. Check each condition explicitly, or use 'in'.",
+            "test_cases": [{"call": "count", "expected": 1, "description": "Count Logic Check"}]
         },
         {
             "order_num": 4,
-            "title": "Sum of even numbers",
-            "error_type": "Syntax Error",
-            "difficulty": "Easy",
-            "points": 5.0,
-            "question_text": "The function sum_even(numbers) should return the sum of all even numbers in the list. However, it contains a syntax error.",
-            "buggy_code": "def sum_even(numbers):\n    total = 0\n    for n in numbers:\n        if n % 2 = 0:\n            total += n\n    return total",
-            "correct_code": "def sum_even(numbers):\n    total = 0\n    for n in numbers:\n        if n % 2 == 0:\n            total += n\n    return total",
-            "explanation": "Equality comparison is done using '==', not '=' (which is assignment).",
-            "test_cases": [{"call": "sum_even([2, 5, 8, 11, 14])", "expected": 24}]
+            "title": "Reverse Number",
+            "error_type": "Name Error",
+            "difficulty": "Medium",
+            "points": 10.0,
+            "question_text": "Find and fix the error in the provided code snippet.",
+            "buggy_code": "num = 123\nreverse = 0\n\nwhile num > 0:\n    digit = num % 10\n    reverse = reverse * 10 + digit\n    num = num // 10\n\nprint(revers)",
+            "correct_code": "num = 123\nreverse = 0\n\nwhile num > 0:\n    digit = num % 10\n    reverse = reverse * 10 + digit\n    num = num // 10\n\nprint(reverse)",
+            "explanation": "Misspelled variable in the final print statement.",
+            "test_cases": [{"call": "reverse", "expected": 321, "description": "Reverse Logic Check"}]
         },
         {
             "order_num": 5,
-            "title": "Reverse a number",
-            "error_type": "Logical Error",
-            "difficulty": "Medium",
-            "points": 5.0,
-            "question_text": "The function should reverse a given integer, however, the division operator used causes an infinite loop or float conversion. Fix it.",
-            "buggy_code": "def reverse_number(num):\n    rev = 0\n    while num > 0:\n        digit = num % 10\n        rev = rev * 10 + digit\n        num = num / 10\n    return rev",
-            "correct_code": "def reverse_number(num):\n    rev = 0\n    while num > 0:\n        digit = num % 10\n        rev = rev * 10 + digit\n        num = num // 10\n    return rev",
-            "explanation": "In Python 3, '/' creates a float. For integer division, you should use '//'.",
-            "test_cases": [{"call": "reverse_number(1234)", "expected": 4321}]
-        },
-        {
-            "order_num": 6,
-            "title": "Array average",
-            "error_type": "Logical Error",
+            "title": "Extract Even Numbers",
+            "error_type": "Syntax Error",
             "difficulty": "Easy",
-            "points": 5.0,
-            "question_text": "Calculate the average of the given numbers. The logic has an unnecessary subtraction. Fix it.",
-            "buggy_code": "def array_average(numbers):\n    total = 0\n    for n in numbers:\n        total += n\n    average = total / len(numbers) - 1\n    return average",
-            "correct_code": "def array_average(numbers):\n    total = 0\n    for n in numbers:\n        total += n\n    average = total / len(numbers)\n    return average",
-            "explanation": "The '- 1' at the end of the average calculation gives an incorrect result.",
-            "test_cases": [{"call": "array_average([10, 20, 30, 40])", "expected": 25.0}]
-        },
-        {
-            "order_num": 7,
-            "title": "Count positive numbers",
-            "error_type": "Logical Error",
-            "difficulty": "Easy",
-            "points": 5.0,
-            "question_text": "The function should count positive numbers in an array, but it has the wrong condition.",
-            "buggy_code": "def count_positives(numbers):\n    count = 0\n    for n in numbers:\n        if n < 0:\n            count += 1\n    return count",
-            "correct_code": "def count_positives(numbers):\n    count = 0\n    for n in numbers:\n        if n > 0:\n            count += 1\n    return count",
-            "explanation": "Positive numbers are strictly greater than 0, so the condition should be `n > 0`.",
-            "test_cases": [{"call": "count_positives([-2, 5, 8, -1, 10])", "expected": 3}]
-        },
-        {
-            "order_num": 8,
-            "title": "Factorial",
-            "error_type": "Logical Error / Boundary",
-            "difficulty": "Easy",
-            "points": 5.0,
-            "question_text": "The function should compute the factorial of a number, but the loop range is off by one.",
-            "buggy_code": "def factorial(n):\n    fact = 1\n    for i in range(1, n):\n        fact *= i\n    return fact",
-            "correct_code": "def factorial(n):\n    fact = 1\n    for i in range(1, n + 1):\n        fact *= i\n    return fact",
-            "explanation": "The `range` function is exclusive of the upper bound, so to include `n`, it must be `n + 1`.",
-            "test_cases": [{"call": "factorial(5)", "expected": 120}]
-        },
-        {
-            "order_num": 9,
-            "title": "Sum of odd numbers",
-            "error_type": "Logical Error",
-            "difficulty": "Easy",
-            "points": 5.0,
-            "question_text": "The function should return the total sum of all odd numbers, but it overwrites the total instead.",
-            "buggy_code": "def sum_odds(numbers):\n    total = 0\n    for n in numbers:\n        if n % 2 == 1:\n            total = n\n    return total",
-            "correct_code": "def sum_odds(numbers):\n    total = 0\n    for n in numbers:\n        if n % 2 == 1:\n            total += n\n    return total",
-            "explanation": "Instead of overwriting `total = n`, we should add to it `total += n`.",
-            "test_cases": [{"call": "sum_odds([3, 8, 11, 14, 17])", "expected": 35}]
-        },
-        {
-            "order_num": 10,
-            "title": "Count digits",
-            "error_type": "Logical Error",
-            "difficulty": "Easy",
-            "points": 5.0,
-            "question_text": "The function should count the digits of a number, but it returns the wrong variable at the end.",
-            "buggy_code": "def count_digits(num):\n    count = 0\n    while num > 0:\n        num = num // 10\n        count += 1\n    return num",
-            "correct_code": "def count_digits(num):\n    count = 0\n    while num > 0:\n        num = num // 10\n        count += 1\n    return count",
-            "explanation": "The function was returning the depleted `num` (which is 0) instead of the accumulated `count`.",
-            "test_cases": [{"call": "count_digits(54321)", "expected": 5}]
+            "points": 10.0,
+            "question_text": "Find and fix the error in the provided code snippet.",
+            "buggy_code": "numbers = [1, 2, 3, 4, 5]\nresult = []\n\nfor num in numbers:\n    if num % 2 = 0:\n        result.append(num)\n\nprint(result)",
+            "correct_code": "numbers = [1, 2, 3, 4, 5]\nresult = []\n\nfor num in numbers:\n    if num % 2 == 0:\n        result.append(num)\n\nprint(result)",
+            "explanation": "To check for equality, use '==' instead of '='.",
+            "test_cases": [{"call": "result", "expected": [2, 4], "description": "Even Logic Check"}]
         }
     ]
 
@@ -334,9 +274,11 @@ def seed_database():
             existing.buggy_code = q_data['buggy_code']
             existing.correct_code = q_data['correct_code']
             existing.test_cases = q_data['test_cases']
-            
-    # Delete excess python questions if there were 20 before
-    Question.query.filter_by(round=1).filter(Question.order_num > 10).delete()
+            existing.error_type = q_data['error_type']
+            existing.points = q_data['points']
+            existing.explanation = q_data['explanation']
+    # Delete excess python questions
+    Question.query.filter_by(round=1).filter(Question.order_num > len(py_questions)).delete()
     print(f"Seeded {len(py_questions)} Python questions for Round 1.")
 
     java_questions = get_java_questions()
