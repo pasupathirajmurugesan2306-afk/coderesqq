@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto mt-12 bg-slate-800/80 p-10 rounded-2xl border border-slate-700 shadow-2xl backdrop-blur-sm text-center">
+    <div class="mb-8">
+        <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400 mb-4 tracking-tight">Round 2: Track Selection</h1>
+        <p class="text-slate-400 text-lg max-w-lg mx-auto leading-relaxed">
+            Welcome to Round 2! The debugging challenges in this round test deeper logical reasoning. 
+            Choose the programming language track you are most comfortable with.
+        </p>
+    </div>
+
+    <form method="POST" action="{{ url_for('competition.round2_track') }}" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Java Option -->
+        <label class="relative cursor-pointer group">
+            <input type="radio" name="track" value="java" class="peer sr-only" required>
+            <div class="h-full p-8 rounded-xl border-2 border-slate-600 bg-slate-900/50 hover:bg-slate-700/50 peer-checked:border-indigo-500 peer-checked:bg-indigo-900/40 peer-checked:ring-4 peer-checked:ring-indigo-500/20 transition-all duration-300">
+                <div class="mb-4">
+                    <svg class="w-16 h-16 mx-auto text-orange-500 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14.613 2H9.387c-.604 0-1.127.426-1.246 1.02l-1.92 9.6h11.558l-1.92-9.6A1.272 1.272 0 0014.613 2zm-8.48 12.8H2l1.92-9.6A2.544 2.544 0 016.42 2.6H8.02l1.44-7.2h5.08l-1.44 7.2h1.6a2.544 2.544 0 012.5 2.6l1.92 9.6h-4.133l-1.44 7.2H6.48l1.44-7.2h-1.807zM12 22a8.55 8.55 0 01-6.195-2.617 8.583 8.583 0 01-2.45-6.583H5.61l1.44-7.2h9.9l1.44 7.2h2.247c-.201 3.238-1.575 6.223-3.86 8.358A8.554 8.554 0 0112 22z" fill-rule="evenodd"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-slate-100 mb-2">Java Track</h3>
+                <p class="text-sm text-slate-400">Strictly typed object-oriented debugging.</p>
+                <div class="mt-4 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 peer-checked:opacity-100 peer-checked:scale-100 transition-all duration-300 text-indigo-400 font-semibold text-sm">
+                    Select Java &rarr;
+                </div>
+            </div>
+        </label>
+
+        <!-- Python Option -->
+        <label class="relative cursor-pointer group">
+            <input type="radio" name="track" value="python" class="peer sr-only" required>
+            <div class="h-full p-8 rounded-xl border-2 border-slate-600 bg-slate-900/50 hover:bg-slate-700/50 peer-checked:border-emerald-500 peer-checked:bg-emerald-900/40 peer-checked:ring-4 peer-checked:ring-emerald-500/20 transition-all duration-300">
+                <div class="mb-4">
+                    <svg class="w-16 h-16 mx-auto text-blue-400 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12.127 2c-5.46 0-5.186 2.37-5.186 2.37L7 7.202h5.182v.726H7.135C4.248 7.928 3 9.4 3 12.336c0 3.014 1.343 4.223 3.96 4.394h1.099v-2.31c0-2.613 2.123-4.706 4.776-4.706h3.693V7.202c0-3.328-1.583-5.202-4.401-5.202zm-1.815 1.63c.486 0 .88.384.88.857a.87.87 0 01-.88.858.87.87 0 01-.88-.858.878.878 0 01.88-.857zm5.975 7.643c-2.457 0-4.041 1.745-4.041 4.5V19h-3.694c-.183 0-.324.137-.324.316v1.31c0 2.274.62 3.374 4.393 3.374 2.81 0 4.288-1.58 4.288-4.908V16h-5.25v-.697h5.056c2.81 0 4.14-1.393 4.14-4.223 0-2.884-.877-4.14-3.791-4.14h-5.263v-.532h4.484zM14.54 20.407a.87.87 0 01-.88.858.87.87 0 01-.88-.858.879.879 0 01.88-.858.87.87 0 01.88.858z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-slate-100 mb-2">Python Track</h3>
+                <p class="text-sm text-slate-400">Dynamic typing and script debugging.</p>
+                <div class="mt-4 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 peer-checked:opacity-100 peer-checked:scale-100 transition-all duration-300 text-emerald-400 font-semibold text-sm">
+                    Select Python &rarr;
+                </div>
+            </div>
+        </label>
+
+        <div class="col-span-1 md:col-span-2 mt-6">
+            <button type="submit" class="w-full md:w-auto px-10 py-4 bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white font-bold rounded-xl shadow-lg hover:shadow-indigo-500/30 transition-all transform hover:-translate-y-1 text-lg">
+                Enter Next Round
+            </button>
+            <p class="text-xs text-slate-500 mt-4"><i class="fa fa-info-circle mr-1"></i> Once you select a track, you cannot change it during the round.</p>
+        </div>
+    </form>
+</div>
+{% endblock %}

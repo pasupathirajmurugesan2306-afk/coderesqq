@@ -151,32 +151,24 @@ if __name__ == '__main__':
                 pass
 
 
-def evaluate_java_code(user_code, java_errors, test_cases=None, question=None):
-    """
-    Evaluates Java submission by checking resolution of the 7 intentional errors.
-    Returns:
-      errors_fixed_count (0 to 7)
-      fixed_status_list: list of dicts for each of the 7 errors (resolved: bool)
-      success: bool (True if all 7 errors fixed)
-      stdout / stderr details
-    """
+def evaluate_multi_error_code(user_code, error_rules, language='java'):
     fixed_status_list = []
     fixed_count = 0
     
-    # Normalize user code for flexible matching (spaces, tabs, newlines)
     norm_user = ' '.join(user_code.split())
-    # Remove single line comments
-    code_no_comments = re.sub(r'//.*', '', user_code)
+    if language == 'java' or language == 'c':
+        code_no_comments = re.sub(r'//.*', '', user_code)
+    else:
+        code_no_comments = re.sub(r'#.*', '', user_code)
     norm_no_comm = ' '.join(code_no_comments.split())
 
-    for err in java_errors:
+    for err in error_rules:
         err_num = err.error_number
         buggy_norm = ' '.join(err.buggy_snippet.split())
         fixed_norm = ' '.join(err.fixed_snippet.split())
         
         is_fixed = False
         
-        # Rule 1: Check if custom detection regex/rule is provided
         if err.detection_rule:
             try:
                 rule = json.loads(err.detection_rule) if isinstance(err.detection_rule, str) and err.detection_rule.startswith('{') else None
@@ -189,18 +181,14 @@ def evaluate_java_code(user_code, java_errors, test_cases=None, question=None):
             except Exception:
                 pass
                 
-        # Rule 2: Check if fixed snippet is present or buggy snippet is removed
         if not is_fixed:
-            # Buggy pattern should not be present
             buggy_still_present = (buggy_norm in norm_user) or (buggy_norm in norm_no_comm)
             fixed_is_present = (fixed_norm in norm_user) or (fixed_norm in norm_no_comm)
             
-            # If fixed snippet was found, or buggy snippet was changed to a valid alternative
             if fixed_is_present:
                 is_fixed = True
             elif not buggy_still_present:
-                # Check fuzzy or key token match
-                tokens = [t for t in fixed_norm.split() if len(t) > 2 and t not in ['public', 'private', 'static', 'int', 'void', 'for', 'if', 'else', '{', '}', ';']]
+                tokens = [t for t in fixed_norm.split() if len(t) > 2 and t not in ['public', 'private', 'static', 'int', 'void', 'for', 'if', 'else', '{', '}', ';', 'def', 'print', 'return', 'import']]
                 if tokens and all(t in norm_no_comm for t in tokens):
                     is_fixed = True
 
@@ -214,35 +202,32 @@ def evaluate_java_code(user_code, java_errors, test_cases=None, question=None):
             'description': err.description if is_fixed else "Error not yet resolved"
         })
 
-    all_fixed = (fixed_count == len(java_errors))
-
-    # Optional: If javac is installed, attempt actual compilation
+    all_fixed = (fixed_count == len(error_rules))
     compile_output = ""
     compile_success = False
-    try:
-        javac_check = subprocess.run(['javac', '-version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, timeout=2)
-        if javac_check.returncode == 0:
-            # javac is available!
-            with tempfile.TemporaryDirectory() as temp_dir:
-                # find class name
-                match = re.search(r'class\s+([A-Za-z0-9_]+)', user_code)
-                class_name = match.group(1) if match else "Solution"
-                java_file = os.path.join(temp_dir, f"{class_name}.java")
-                with open(java_file, 'w', encoding='utf-8') as jf:
-                    jf.write(user_code)
-                comp = subprocess.run(['javac', java_file], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, timeout=5)
-                compile_success = (comp.returncode == 0)
-                compile_output = comp.stderr if comp.stderr else ("Compilation Successful!" if compile_success else "")
-    except Exception:
-        # javac not available or error, relies on error verification
-        pass
+
+    if language == 'java':
+        try:
+            javac_check = subprocess.run(['javac', '-version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, timeout=2)
+            if javac_check.returncode == 0:
+                with tempfile.TemporaryDirectory() as temp_dir:
+                    match = re.search(r'class\s+([A-Za-z0-9_]+)', user_code)
+                    class_name = match.group(1) if match else "Solution"
+                    java_file = os.path.join(temp_dir, f"{class_name}.java")
+                    with open(java_file, 'w', encoding='utf-8') as jf:
+                        jf.write(user_code)
+                    comp = subprocess.run(['javac', java_file], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, timeout=5)
+                    compile_success = (comp.returncode == 0)
+                    compile_output = comp.stderr if comp.stderr else ("Compilation Successful!" if compile_success else "")
+        except Exception:
+            pass
 
     return {
         'success': all_fixed,
         'errors_fixed_count': fixed_count,
-        'total_errors': len(java_errors),
+        'total_errors': len(error_rules),
         'fixed_status_list': fixed_status_list,
         'compile_success': compile_success,
         'compile_output': compile_output,
-        'stdout': f"Analysis complete. {fixed_count}/{len(java_errors)} errors corrected." + (f"\n{compile_output}" if compile_output else "")
+        'stdout': f"Analysis complete. {fixed_count}/{len(error_rules)} errors corrected." + (f'\n{compile_output}' if compile_output else "")
     }

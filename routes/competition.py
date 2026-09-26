@@ -1,7 +1,7 @@
 from datetime import datetime
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash, jsonify
 from models import db, Participant, Question, JavaError, Submission, Competition
-from services.code_evaluator import run_python_code, evaluate_java_code
+from services.code_evaluator import run_python_code, evaluate_multi_error_code
 from services.anti_cheat import validate_round_timer
 
 competition_bp = Blueprint('competition', __name__)
@@ -100,6 +100,17 @@ def finish_round1():
     return redirect(url_for('participant.result'))
 
 
+@competition_bp.route('/round2/track', methods=['GET', 'POST'])
+def round2_track():
+    pid = session.get('participant_id')
+    if not pid: return redirect(url_for('participant.register'))
+    if request.method == 'POST':
+        track = request.form.get('track')
+        if track in ['java', 'python']:
+            session['r2_track'] = track
+            return redirect(url_for('competition.round2'))
+    return render_template('round2_track.html')
+
 @competition_bp.route('/round2')
 def round2():
     pid = session.get('participant_id')
@@ -115,6 +126,9 @@ def round2():
     if comp and not comp.r2_enabled:
         flash('Round 2 is currently disabled by the competition administrator.', 'warning')
         return redirect(url_for('participant.result'))
+        
+    if not session.get('r2_track'):
+        return redirect(url_for('competition.round2_track'))
 
     # Start timer if not already started
     if not participant.r2_started_at:
@@ -132,7 +146,8 @@ def round2():
         flash('Round 2 time limit has expired.', 'info')
         return redirect(url_for('participant.result'))
 
-    questions = Question.query.filter_by(round=2).order_by(Question.order_num).all()
+    r2_track = session.get('r2_track', 'java')
+    questions = Question.query.filter_by(round=2, language=r2_track).order_by(Question.order_num).all()
     submissions = Submission.query.filter_by(participant_id=participant.id, round=2).all()
     sub_map = {s.question_id: s for s in submissions}
 
@@ -199,7 +214,7 @@ def api_run_code():
     if not question:
         return jsonify({'success': False, 'error': 'Question not found'}), 404
         
-    if question.language == 'python':
+    if question.round == 1:
         # Run visible test cases
         visible_tests = [tc for tc in question.test_cases if not tc.get('is_hidden', False)]
         eval_res = run_python_code(user_code, visible_tests)
@@ -210,8 +225,8 @@ def api_run_code():
             'stderr': eval_res['stderr'],
             'fatal_error': eval_res.get('fatal_error')
         })
-    else: # Java
-        eval_res = evaluate_java_code(user_code, question.java_errors, question.test_cases, question)
+    else: # Round 2 (Java or Python)
+        eval_res = evaluate_multi_error_code(user_code, question.java_errors, language=question.language)
         return jsonify({
             'success': eval_res['success'],
             'errors_fixed_count': eval_res['errors_fixed_count'],
@@ -260,7 +275,7 @@ def api_submit_code():
             score = 0.0
             status = 'failed'
     else: # Java
-        eval_res = evaluate_java_code(user_code, question.java_errors, question.test_cases, question)
+        eval_res = evaluate_multi_error_code(user_code, question.java_errors, question.test_cases, question)
         eval_details = eval_res
         errors_fixed_count = eval_res['errors_fixed_count']
         score = round(errors_fixed_count * pts_per_error2, 2)

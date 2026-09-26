@@ -66,158 +66,246 @@ def get_python_questions():
         }
     ]
 
-def get_java_questions():
+def get_round2_questions():
     return [
         {
             "order_num": 1,
-            "title": "Second largest element",
+            "language": "java",
+            "title": "Second Largest",
             "difficulty": "Medium",
-            "points": 14.0,
-            "question_text": "The method secondLargest contains multiple errors including array bounds and incorrect assignment logic. Fix them to return the second largest element.",
-            "buggy_code": "public class Main {\n    public static int secondLargest(int[] arr) {\n        int largest = 0;\n        int second = 0;\n        for (int i = 0; i <= arr.length; i++) {\n            if (arr[i] < largest) {\n                second = largest;\n                largest = arr[i];\n            } else if (arr[i] > second) {\n                largest = arr[i];\n            }\n        }\n        return largest;\n    }\n}",
-            "correct_code": "public class Main {\n    public static int secondLargest(int[] arr) {\n        int largest = 0;\n        int second = 0;\n        for (int i = 0; i < arr.length; i++) {\n            if (arr[i] > largest) {\n                second = largest;\n                largest = arr[i];\n            } else if (arr[i] > second && arr[i] != largest) {\n                second = arr[i];\n            }\n        }\n        return second;\n    }\n}",
-            "explanation": "Fixed array bounds, comparison direction, logic assignment, and the return value.",
-            "test_cases": [{"description": "Check if second largest element logic works", "is_hidden": False}],
+            "points": 25.0,
+            "question_text": "Find and fix the errors to calculate the second largest number.",
+            "buggy_code": '''import java.util.Scanner;
+
+public class SecondLargest {
+
+    static int[] findSecondLargest(int[] numbers) {
+        int largest = numbers[0];
+        int second = 0;
+
+        for (int i = 1; i < numbers.length; i++) {
+            if (numbers[i] > largest) {
+                second = largest;
+                largest = numbers[i];
+            } else if (numbers[i] > second) {
+                second = numbers[i];
+            }
+        }
+
+        return new int[]{largest second};
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter numbers:");
+        String input = sc.nextLine();
+
+        String[] parts = input.split(" ");
+        int[] numbers = new int[parts.length];
+        for (int i = 0; i < parts.length; i++) {
+            numbers[i] = Integer.parseInt(parts[i]);
+        }
+        int[] result = findSecondLargest(numbers);
+        System.out.println("Largest: " + result[0]);
+        System.out.println("Second Largest: " result[1]);
+    }
+}''',
+            "correct_code": "",
+            "explanation": "",
+            "test_cases": [],
             "errors": [
                 {
                     "error_number": 1,
-                    "error_category": "Array Bounds",
-                    "description": "Loop condition accesses out of bounds.",
-                    "buggy_snippet": "i <= arr.length",
-                    "fixed_snippet": "i < arr.length",
-                    "detection_rule": '{"regex": "i\\\\s*<\\\\s*arr\\\\.length"}'
+                    "error_category": "Syntax Error",
+                    "description": "Missing comma in array initialization",
+                    "buggy_snippet": "new int[]{largest second};",
+                    "fixed_snippet": "new int[]{largest, second};",
+                    "detection_rule": '{"regex": "new\s+int\s*\[\s*\]\s*\{\s*largest\s*,\s*second\s*\}"}'
                 },
                 {
                     "error_number": 2,
-                    "error_category": "Logic",
-                    "description": "Incorrect comparison for largest element.",
-                    "buggy_snippet": "arr[i] < largest",
-                    "fixed_snippet": "arr[i] > largest",
-                    "detection_rule": '{"regex": "arr\\\\[i\\\\]\\\\s*>\\\\s*largest"}'
-                },
-                {
-                    "error_number": 3,
-                    "error_category": "Return Value",
-                    "description": "Returning largest instead of second largest.",
-                    "buggy_snippet": "return largest;",
-                    "fixed_snippet": "return second;",
-                    "detection_rule": '{"regex": "return\\\\s+second;"}'
+                    "error_category": "Syntax Error",
+                    "description": "Missing concatenation operator in print",
+                    "buggy_snippet": '"Second Largest: " result[1]',
+                    "fixed_snippet": '"Second Largest: " + result[1]',
+                    "detection_rule": '{"regex": "\"Second Largest: \"\s*\+\s*result\[1\]"}'
                 }
             ]
         },
         {
             "order_num": 2,
-            "title": "Palindrome number",
+            "language": "java",
+            "title": "Count Vowels",
             "difficulty": "Medium",
-            "points": 14.0,
-            "question_text": "Determine if a number is a palindrome by reversing it.",
-            "buggy_code": "public class Main {\n    public static boolean isPalindrome(int num) {\n        int original = 0;\n        int reverse = 0;\n        while (num >= 0) {\n            int digit = num / 10;\n            reverse = reverse * 10 + digit;\n            num = num % 10;\n        }\n        if (original == reverse)\n            return true;\n        else\n            return false;\n    }\n}",
-            "correct_code": "public class Main {\n    public static boolean isPalindrome(int num) {\n        int original = num;\n        int reverse = 0;\n        while (num > 0) {\n            int digit = num % 10;\n            reverse = reverse * 10 + digit;\n            num = num / 10;\n        }\n        if (original == reverse)\n            return true;\n        else\n            return false;\n    }\n}",
-            "explanation": "Fixed math operators and loop logic. original should track num, and extracting digits uses '%' while reducing uses '/'.",
-            "test_cases": [{"description": "Palindrome number tests", "is_hidden": False}],
-            "errors": [
-                {
-                    "error_number": 1,
-                    "error_category": "Assignment",
-                    "description": "original does not store the incoming number.",
-                    "buggy_snippet": "int original = 0;",
-                    "fixed_snippet": "int original = num;",
-                    "detection_rule": '{"regex": "int\\\\s+original\\\\s*=\\\\s*num;"}'
-                },
-                {
-                    "error_number": 2,
-                    "error_category": "Math",
-                    "description": "Incorrect operators for extraction and reduction.",
-                    "buggy_snippet": "digit = num / 10;",
-                    "fixed_snippet": "digit = num % 10;",
-                    "detection_rule": '{"regex": "num\\\\s*%\\\\s*10"}'
-                }
-            ]
-        },
-        {
-            "order_num": 3,
-            "title": "Missing number",
-            "difficulty": "Easy",
-            "points": 14.0,
-            "question_text": "Find the missing number in an array containing elements from 1 to N.",
-            "buggy_code": "public class Main {\n    public static int missingNumber(int[] arr) {\n        int n = arr.length + 1;\n        int expected = n * (n + 1) / 2;\n        int actual = 0;\n        for (int i = 0; i <= arr.length; i++) {\n            actual += arr[i];\n        }\n        int missing = actual - expected;\n        return actual;\n    }\n}",
-            "correct_code": "public class Main {\n    public static int missingNumber(int[] arr) {\n        int n = arr.length + 1;\n        int expected = n * (n + 1) / 2;\n        int actual = 0;\n        for (int i = 0; i < arr.length; i++) {\n            actual += arr[i];\n        }\n        int missing = expected - actual;\n        return missing;\n    }\n}",
-            "explanation": "Fixed array bounds and logic for returning missing number.",
-            "test_cases": [{"description": "Missing number check", "is_hidden": False}],
-            "errors": [
-                {
-                    "error_number": 1,
-                    "error_category": "Bounds",
-                    "description": "Loop goes out of bounds.",
-                    "buggy_snippet": "i <= arr.length",
-                    "fixed_snippet": "i < arr.length",
-                    "detection_rule": '{"regex": "i\\\\s*<\\\\s*arr\\\\.length"}'
-                },
-                {
-                    "error_number": 2,
-                    "error_category": "Logic",
-                    "description": "Returns the actual sum instead of the missing element.",
-                    "buggy_snippet": "return actual;",
-                    "fixed_snippet": "return missing;",
-                    "detection_rule": '{"regex": "return\\\\s+missing;"}'
-                }
-            ]
-        },
-        {
-            "order_num": 4,
-            "title": "Duplicate elements",
-            "difficulty": "Easy",
-            "points": 14.0,
-            "question_text": "Print the duplicate elements in an array. Currently, the conditionals and loop variables are wrong.",
-            "buggy_code": "public class Main {\n    public static int findDuplicate(int[] arr) {\n        for (int i = 0; i < arr.length; i++) {\n            for (int j = i; j < arr.length; j++) {\n                if (arr[i] != arr[j]) {\n                    return arr[i];\n                }\n            }\n        }\n        return -1;\n    }\n}",
-            "correct_code": "public class Main {\n    public static int findDuplicate(int[] arr) {\n        for (int i = 0; i < arr.length; i++) {\n            for (int j = i + 1; j < arr.length; j++) {\n                if (arr[i] == arr[j]) {\n                    return arr[i];\n                }\n            }\n        }\n        return -1;\n    }\n}",
-            "explanation": "To check for duplicates, j should start from i+1, and testing equality uses ==.",
-            "test_cases": [{"description": "Check duplicate finding", "is_hidden": False}],
-            "errors": [
-                {
-                    "error_number": 1,
-                    "error_category": "Loop Start",
-                    "description": "Inner loop compares element with itself.",
-                    "buggy_snippet": "int j = i;",
-                    "fixed_snippet": "int j = i + 1;",
-                    "detection_rule": '{"regex": "int\\\\s+j\\\\s*=\\\\s*i\\\\s*\\\\+\\\\s*1"}'
-                },
-                {
-                    "error_number": 2,
-                    "error_category": "Comparator",
-                    "description": "Finds different elements rather than equal ones.",
-                    "buggy_snippet": "arr[i] != arr[j]",
-                    "fixed_snippet": "arr[i] == arr[j]",
-                    "detection_rule": '{"regex": "arr\\\\[i\\\\]\\\\s*==\\\\s*arr\\\\[j\\\\]"}'
-                }
-            ]
-        },
-        {
-            "order_num": 5,
-            "title": "Target sum pair",
-            "difficulty": "Medium",
-            "points": 14.0,
-            "question_text": "Find if there exists a pair that sums to target.",
-            "buggy_code": "public class Main {\n    public static boolean hasTargetSum(int[] arr, int target) {\n        for (int i = 0; i <= arr.length; i++) {\n            for (int j = i; j < arr.length; j++) {\n                if (arr[i] + arr[j] = target) {\n                    return true;\n                }\n            }\n        }\n        return false;\n    }\n}",
-            "correct_code": "public class Main {\n    public static boolean hasTargetSum(int[] arr, int target) {\n        for (int i = 0; i < arr.length; i++) {\n            for (int j = i + 1; j < arr.length; j++) {\n                if (arr[i] + arr[j] == target) {\n                    return true;\n                }\n            }\n        }\n        return false;\n    }\n}",
-            "explanation": "Fixed array bounds, assignment in conditional, and self-pairing (j=i).",
-            "test_cases": [{"description": "Target sum check", "is_hidden": False}],
+            "points": 25.0,
+            "question_text": "Find and fix the errors to calculate vowels.",
+            "buggy_code": '''import java.util.Scanner;
+
+public class CountVowels {
+    static int countVowels(String text) {
+        String vowels = "aeiou";
+        int count = 0;
+        for (int i = 0; i < text.length(); i++) {
+            char ch = text.charAt(i)
+            if (vowels.indexOf(ch) >= 0) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter a string: ");
+        String text = sc.nextLine();
+        
+        if (text.length() = 0) {
+            System.out.println("Empty string");
+        } else {
+            int result = countVowels(text);
+            System.out.println("Vowels: " + result);
+            if (result > 0) {
+                System.out.println("Vowels found");
+            } else {
+                System.out.println("No vowels found");
+            }
+        }
+    }
+}''',
+            "correct_code": "",
+            "explanation": "",
+            "test_cases": [],
             "errors": [
                 {
                     "error_number": 1,
                     "error_category": "Syntax Error",
-                    "description": "Assignment instead of equality in if condition.",
-                    "buggy_snippet": "= target",
-                    "fixed_snippet": "== target",
-                    "detection_rule": '{"regex": "==\\\\s*target"}'
+                    "description": "Missing semicolon",
+                    "buggy_snippet": "char ch = text.charAt(i)",
+                    "fixed_snippet": "char ch = text.charAt(i);",
+                    "detection_rule": '{"regex": "char\s+ch\s*=\s*text\.charAt\(i\)\s*;"}'
                 },
                 {
                     "error_number": 2,
-                    "error_category": "Array Bounds",
-                    "description": "Outer loop goes out of bounds.",
-                    "buggy_snippet": "i <= arr.length",
-                    "fixed_snippet": "i < arr.length",
-                    "detection_rule": '{"regex": "i\\\\s*<\\\\s*arr\\\\.length"}'
+                    "error_category": "Syntax Error",
+                    "description": "Assignment instead of conditional",
+                    "buggy_snippet": "if (text.length() = 0)",
+                    "fixed_snippet": "if (text.length() == 0)",
+                    "detection_rule": '{"regex": "text\.length\(\)\s*==\s*0"}'
+                }
+            ]
+        },
+        {
+            "order_num": 1,
+            "language": "python",
+            "title": "Second Largest",
+            "difficulty": "Medium",
+            "points": 25.0,
+            "question_text": "Find and fix the errors to calculate the second largest number.",
+            "buggy_code": '''def find_second_largest(numbers):
+    largest = numbers[0]
+    second = 0
+    for i in range(1, len(numbers))
+        if numbers[i] > largest:
+            second = largest
+            largest = numbers[i]
+        elif numbers[i] > second
+            second = numbers[i]
+    return largest, second
+
+numbers = list(map(int, input().split()))
+result = find_second_largest(numbers)
+print("Largest:", result[0])
+print("Second Largest:" result[1])''',
+            "correct_code": "",
+            "explanation": "",
+            "test_cases": [],
+            "errors": [
+                {
+                    "error_number": 1,
+                    "error_category": "Syntax Error",
+                    "description": "Missing colon in for loop",
+                    "buggy_snippet": "for i in range(1, len(numbers))",
+                    "fixed_snippet": "for i in range(1, len(numbers)):",
+                    "detection_rule": '{"regex": "for\s+i\s+in\s+range\(1,\s*len\(numbers\)\):"}'
+                },
+                {
+                    "error_number": 2,
+                    "error_category": "Syntax Error",
+                    "description": "Missing colon in elif",
+                    "buggy_snippet": "elif numbers[i] > second",
+                    "fixed_snippet": "elif numbers[i] > second:",
+                    "detection_rule": '{"regex": "elif\s+numbers\[i\]\s*>\s*second:"}'
+                },
+                {
+                    "error_number": 3,
+                    "error_category": "Syntax Error",
+                    "description": "Missing comma in print",
+                    "buggy_snippet": 'print("Second Largest:" result[1])',
+                    "fixed_snippet": 'print("Second Largest:", result[1])',
+                    "detection_rule": '{"regex": "print\(\[\'\"]Second Largest:\[\'\"\s*,\s*result\[1\]\)"}'
+                }
+            ]
+        },
+        {
+            "order_num": 2,
+            "language": "python",
+            "title": "Count Vowels",
+            "difficulty": "Medium",
+            "points": 25.0,
+            "question_text": "Find and fix the errors to count vowels.",
+            "buggy_code": '''def count_vowels(text):
+    vowels = "aeiou"
+    count = 0
+    for ch in text
+        if ch in vowels:
+            count += 1
+    return count
+
+text = input("Enter a string: ")
+if len(text) = 0:
+    print("Empty string")
+else
+    result = count_vowels(text)
+    print("Vowels:", result)
+    if result > 0
+        print("Vowels found")
+    else:
+        print("No vowels found")''',
+            "correct_code": "",
+            "explanation": "",
+            "test_cases": [],
+            "errors": [
+                {
+                    "error_number": 1,
+                    "error_category": "Syntax Error",
+                    "description": "Missing colon in for loop",
+                    "buggy_snippet": "for ch in text",
+                    "fixed_snippet": "for ch in text:",
+                    "detection_rule": '{"regex": "for\s+ch\s+in\s+text:"}'
+                },
+                {
+                    "error_number": 2,
+                    "error_category": "Syntax Error",
+                    "description": "Assignment instead of conditional",
+                    "buggy_snippet": "if len(text) = 0:",
+                    "fixed_snippet": "if len(text) == 0:",
+                    "detection_rule": '{"regex": "if\s+len\(text\)\s*==\s*0:"}'
+                },
+                {
+                    "error_number": 3,
+                    "error_category": "Syntax Error",
+                    "description": "Missing colon in else",
+                    "buggy_snippet": "else",
+                    "fixed_snippet": "else:",
+                    "detection_rule": '{"regex": "else:"}'
+                },
+                {
+                    "error_number": 4,
+                    "error_category": "Syntax Error",
+                    "description": "Missing colon in if",
+                    "buggy_snippet": "if result > 0",
+                    "fixed_snippet": "if result > 0:",
+                    "detection_rule": '{"regex": "if\s+result\s*>\s*0:"}'
                 }
             ]
         }
@@ -281,13 +369,13 @@ def seed_database():
     Question.query.filter_by(round=1).filter(Question.order_num > len(py_questions)).delete()
     print(f"Seeded {len(py_questions)} Python questions for Round 1.")
 
-    java_questions = get_java_questions()
-    for q_data in java_questions:
-        existing = Question.query.filter_by(round=2, order_num=q_data['order_num']).first()
+    r2_questions = get_round2_questions()
+    for q_data in r2_questions:
+        existing = Question.query.filter_by(round=2, language=q_data['language'], order_num=q_data['order_num']).first()
         if not existing:
             q = Question(
                 round=2,
-                language='java',
+                language=q_data['language'],
                 order_num=q_data['order_num'],
                 title=q_data['title'],
                 difficulty=q_data['difficulty'],
@@ -295,8 +383,7 @@ def seed_database():
                 question_text=q_data['question_text'],
                 buggy_code=q_data['buggy_code'],
                 correct_code=q_data['correct_code'],
-                error_type="Multiple Intentional Errors",
-                explanation=q_data['explanation']
+                error_type="Multiple Errors"
             )
             q.test_cases = q_data['test_cases']
             db.session.add(q)
@@ -311,15 +398,15 @@ def seed_database():
                     buggy_snippet=err_data['buggy_snippet'],
                     fixed_snippet=err_data['fixed_snippet'],
                     detection_rule=err_data.get('detection_rule'),
-                    points=2.0
+                    points=25.0 / len(q_data['errors'])
                 )
                 db.session.add(err)
         else:
             existing.title = q_data['title']
             existing.question_text = q_data['question_text']
             existing.buggy_code = q_data['buggy_code']
-            existing.correct_code = q_data['correct_code']
-            existing.test_cases = q_data['test_cases']
+            existing.points = q_data['points']
+            
             JavaError.query.filter_by(question_id=existing.id).delete()
             for err_data in q_data['errors']:
                 err = JavaError(
@@ -330,11 +417,17 @@ def seed_database():
                     buggy_snippet=err_data['buggy_snippet'],
                     fixed_snippet=err_data['fixed_snippet'],
                     detection_rule=err_data.get('detection_rule'),
-                    points=2.0
+                    points=25.0 / len(q_data['errors'])
                 )
                 db.session.add(err)
 
-    print(f"Seeded {len(java_questions)} Java questions for Round 2.")
+    # Clean old items
+    Question.query.filter_by(round=2).delete() # We will just delete all R2 questions first and reinsert them to be clean, wait, I shouldn't delete if I just updated them. Let's just delete the ones that don't match.
+    for q in Question.query.filter_by(round=2).all():
+        if getattr(q, 'language') not in ['java', 'python'] or getattr(q, 'order_num') > 2:
+            db.session.delete(q)
 
+    print("Seeded 4 multi-language questions for Round 2.")
     db.session.commit()
     print("Database seeding completed.")
+
