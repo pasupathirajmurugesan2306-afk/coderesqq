@@ -7,7 +7,7 @@
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
             <h1 class="text-2xl font-extrabold text-white tracking-tight">Question Bank Management</h1>
-            <p class="text-xs text-slate-400 mt-0.5">Configure 1-error Python problems and 7-error Java challenge programs</p>
+            <p class="text-xs text-slate-400 mt-0.5">Configure all Round 1 & Round 2 tracking and problems</p>
         </div>
 
         <div class="flex items-center gap-3">
@@ -30,7 +30,7 @@
         </a>
         <a href="{{ url_for('admin.questions', round='2') }}"
             class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition {{ 'bg-indigo-600 text-white' if active_round == '2' else 'text-slate-400 hover:text-white bg-slate-900' }}">
-            <i class="fa-brands fa-java text-red-400 mr-1"></i> Round 2 (Java)
+            <i class="fa-solid fa-code text-indigo-400 mr-1"></i> Round 2 (Multi-track)
         </a>
     </div>
 
@@ -63,7 +63,7 @@
                             </span>
                             {% else %}
                             <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-950 text-red-300 border border-red-500/30 inline-flex items-center gap-1">
-                                <i class="fa-brands fa-java"></i> Round 2
+                                <i class="fa-brands fa-java"></i><i class="fa-brands fa-python"></i> Round 2
                             </span>
                             {% endif %}
                         </td>

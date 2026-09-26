@@ -39,7 +39,7 @@ def questions():
 def add_question():
     if request.method == 'POST':
         round_num = int(request.form.get('round', 1))
-        language = 'python' if round_num == 1 else 'java'
+        language = request.form.get('language', 'python' if round_num == 1 else 'java')
         title = request.form.get('title', '').strip()
         difficulty = request.form.get('difficulty', 'Medium')
         points = float(request.form.get('points', 5.0 if round_num == 1 else 14.0))
@@ -83,18 +83,20 @@ def add_question():
         db.session.flush()
 
         if round_num == 2:
-            # Java question: Validate exactly 7 errors submitted
             errors_data = []
-            for i in range(1, 8):
-                cat = request.form.get(f'error_{i}_category', f'Category {i}').strip()
+            for i in range(1, 11): # Up to 10 errors
+                cat = request.form.get(f'error_{i}_category', '').strip()
                 desc = request.form.get(f'error_{i}_desc', '').strip()
                 buggy_snip = request.form.get(f'error_{i}_buggy', '').strip()
                 fixed_snip = request.form.get(f'error_{i}_fixed', '').strip()
-                if not desc or not buggy_snip or not fixed_snip:
-                    db.session.rollback()
-                    flash('Java questions must have all 7 error descriptions and code snippets completed.', 'error')
-                    return redirect(url_for('admin.add_question'))
-                errors_data.append((i, cat, desc, buggy_snip, fixed_snip))
+                if not desc or not buggy_snip:
+                    continue
+                errors_data.append((len(errors_data)+1, cat, desc, buggy_snip, fixed_snip))
+
+            if not errors_data:
+                db.session.rollback()
+                flash('Round 2 questions must have at least 1 error mapped.', 'error')
+                return redirect(url_for('admin.add_question'))
 
             for (err_idx, cat, desc, buggy_snip, fixed_snip) in errors_data:
                 err = JavaError(
@@ -104,7 +106,7 @@ def add_question():
                     description=desc,
                     buggy_snippet=buggy_snip,
                     fixed_snippet=fixed_snip,
-                    points=points / 7.0
+                    points=points / len(errors_data)
                 )
                 db.session.add(err)
 
@@ -135,16 +137,17 @@ def edit_question(q_id):
                 pass
 
         if q.round == 2:
+            q.language = request.form.get('language', q.language)
             for err in q.java_errors:
                 i = err.error_number
                 cat = request.form.get(f'error_{i}_category')
                 desc = request.form.get(f'error_{i}_desc')
                 buggy_snip = request.form.get(f'error_{i}_buggy')
                 fixed_snip = request.form.get(f'error_{i}_fixed')
-                if cat: err.error_category = cat
-                if desc: err.description = desc
-                if buggy_snip: err.buggy_snippet = buggy_snip
-                if fixed_snip: err.fixed_snippet = fixed_snip
+                if cat is not None: err.error_category = cat
+                if desc is not None: err.description = desc
+                if buggy_snip is not None: err.buggy_snippet = buggy_snip
+                if fixed_snip is not None: err.fixed_snippet = fixed_snip
 
         db.session.commit()
         flash(f'Question "{q.title}" updated successfully!', 'success')
