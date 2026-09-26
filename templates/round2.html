@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Round 2: Java Debugging | CoderesQ{% endblock %}
+{% block title %}Round 2: {{ r2_track|title }} Debugging | CoderesQ{% endblock %}
 
 {% block head %}
 <!-- Monaco Editor Loader -->
@@ -14,8 +14,8 @@
     <div class="bg-slate-900 border-b border-slate-800 px-4 py-2.5 flex items-center justify-between z-10 flex-shrink-0">
         <div class="flex items-center gap-3">
             <div class="flex items-center gap-2 px-2.5 py-1 rounded bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-mono font-bold">
-                <i class="fa-brands fa-java text-base"></i>
-                ROUND 2 &bull; JAVA DEBUGGING
+                {% if r2_track == "python" %}<i class="fa-brands fa-python text-base"></i>{% else %}<i class="fa-brands fa-java text-base"></i>{% endif %}
+                ROUND 2 &bull; {{ r2_track|upper }} DEBUGGING
             </div>
             <span id="q-indicator" class="text-sm font-semibold text-slate-300 font-mono">
                 Question 1 / {{ questions|length }}
@@ -27,7 +27,7 @@
             <div class="flex items-center gap-3 bg-slate-950 px-3.5 py-1 rounded-xl border border-slate-800">
                 <div class="flex flex-col">
                     <span class="text-[10px] uppercase font-mono text-slate-400 font-semibold">Errors Fixed</span>
-                    <span id="errors-fixed-counter" class="text-xs font-mono font-bold text-rose-400">0 / 7</span>
+                    <span id="errors-fixed-counter" class="text-xs font-mono font-bold text-rose-400">0 / -</span>
                 </div>
                 <!-- 7 Dot Badges -->
                 <div id="error-badges-container" class="flex items-center gap-1.5">
@@ -72,7 +72,7 @@
             <div class="p-4 border-b border-slate-800 bg-slate-900/90 flex-shrink-0">
                 <div class="flex items-center justify-between mb-2">
                     <span class="px-2 py-0.5 rounded text-[11px] font-mono font-semibold bg-red-950/80 text-red-300 border border-red-500/30">
-                        7 Intentional Bugs
+                        Intentional Bugs
                     </span>
                     <div class="flex items-center gap-2 text-xs font-mono">
                         <span id="q-difficulty" class="px-2 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-500/30 font-bold">HARD</span>
@@ -94,16 +94,16 @@
                 <div class="p-3.5 rounded-lg bg-slate-950/80 border border-slate-800 text-xs text-slate-400 space-y-2">
                     <div class="font-semibold text-indigo-300 flex items-center gap-1.5">
                         <i class="fa-solid fa-lightbulb"></i>
-                        The 7 Error Distribution Categories:
+                        Error Distribution Categories:
                     </div>
                     <ul class="space-y-1 list-disc list-inside text-[11px]">
-                        <li>Variable declaration / Type mismatch</li>
-                        <li>Method signature / Visibility modifier</li>
-                        <li>Loop condition / Off-by-one boundary</li>
-                        <li>Array / Collection indexing &amp; mutation</li>
+                        <li>Variable declaration & Usage</li>
+                        <li>Function / Method signature</li>
+                        <li>Loop condition and syntax</li>
+                        <li>Collections &amp; Iterables</li>
                         <li>Conditional logic / String equality</li>
                         <li>Object-oriented programming (OOP / Constructor)</li>
-                        <li>Java API usage / Exception handling</li>
+                        <li>Language-Specific Syntax (Colons, Indexing)</li>
                     </ul>
                 </div>
             </div>
@@ -111,8 +111,8 @@
             <!-- Question Navigator (5 Cards) -->
             <div class="p-3 border-t border-slate-800 bg-slate-950/80 flex-shrink-0">
                 <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center justify-between">
-                    <span>Java Questions (1 - {{ questions|length }})</span>
-                    <span class="text-[10px] text-slate-500 font-mono">14 Marks Each</span>
+                    <span>{{ r2_track|title }} Questions (1 - {{ questions|length }})</span>
+                    <span class="text-[10px] text-slate-500 font-mono">25 Marks Each</span>
                 </div>
                 <div class="flex items-center gap-2">
                     {% for q in questions %}
@@ -131,10 +131,10 @@
             <div class="bg-slate-900 border-b border-slate-800 px-4 py-2 flex items-center justify-between flex-shrink-0">
                 <div class="flex items-center gap-2">
                     <span class="text-xs font-mono text-slate-400 flex items-center gap-1.5">
-                        <i class="fa-brands fa-java text-red-400"></i>
-                        <span>Solution.java</span>
+                        {% if r2_track == "python" %}<i class="fa-brands fa-python text-blue-400"></i>{% else %}<i class="fa-brands fa-java text-red-400"></i>{% endif %}
+                        <span>Solution.{{ "py" if r2_track == "python" else "java" }}</span>
                     </span>
-                    <span class="text-[11px] text-rose-400/80 font-mono italic">(7 Errors to Resolve)</span>
+                    <span class="text-[11px] text-rose-400/80 font-mono italic"></span>
                 </div>
 
                 <div class="flex items-center gap-2">
@@ -166,7 +166,7 @@
                 <div class="bg-slate-900/90 border-b border-slate-800 px-4 py-1.5 flex items-center justify-between text-xs">
                     <div class="flex items-center gap-2 font-mono text-slate-400">
                         <i class="fa-solid fa-bug text-red-400 text-xs"></i>
-                        <span>Bug Analysis &amp; Diagnostic Output</span>
+                        <span>Bug Analysis &amp; Diagnostic Output ({{ r2_track|title }})</span>
                     </div>
 
                     <!-- Next / Prev Question Navigator Buttons -->
@@ -181,7 +181,7 @@
                 </div>
 
                 <div id="output-terminal" class="flex-1 p-3 overflow-y-auto terminal-output text-slate-300">
-                    <span class="text-slate-500">Run code or submit solution to evaluate resolved Java errors...</span>
+                    <span class="text-slate-500">Run code or submit solution to evaluate resolved errors...</span>
                 </div>
             </div>
 

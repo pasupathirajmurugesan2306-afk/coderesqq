@@ -178,7 +178,8 @@ def round2():
                            comp=comp,
                            questions=questions,
                            q_data_json=q_data_list,
-                           remaining_seconds=remaining_seconds)
+                           remaining_seconds=remaining_seconds,
+                           r2_track=r2_track)
 
 
 @competition_bp.route('/round2/finish', methods=['POST'])
