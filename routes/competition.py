@@ -166,8 +166,9 @@ def round2():
             'question_text': q.question_text,
             'buggy_code': q.buggy_code,
             'current_code': current_code,
+            'language': getattr(q, 'language', 'java'),
             'errors_fixed_count': fixed_count,
-            'total_errors': 7,
+            'total_errors': len(q.java_errors) if q.java_errors else 7,
             'score': score,
             'points': q.points
         })
@@ -327,7 +328,7 @@ def api_submit_code():
         'status': status,
         'score': score,
         'errors_fixed_count': errors_fixed_count,
-        'total_errors': 7 if question.language == 'java' else 1,
+        'total_errors': len(question.java_errors) if question.java_errors else (7 if question.language == 'java' else 1),
         'r1_score': participant.r1_score,
         'r2_score': participant.r2_score,
         'total_score': participant.total_score,
