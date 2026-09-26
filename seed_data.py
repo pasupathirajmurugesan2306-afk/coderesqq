@@ -422,7 +422,7 @@ def seed_database():
                 db.session.add(err)
 
     # Clean old items
-    Question.query.filter_by(round=2).delete() # We will just delete all R2 questions first and reinsert them to be clean, wait, I shouldn't delete if I just updated them. Let's just delete the ones that don't match.
+    pass # Fixed deletion bug
     for q in Question.query.filter_by(round=2).all():
         if getattr(q, 'language') not in ['java', 'python'] or getattr(q, 'order_num') > 2:
             db.session.delete(q)

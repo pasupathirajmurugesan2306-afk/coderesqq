@@ -107,6 +107,12 @@ if __name__ == '__main__':
         stdout = proc.stdout
         stderr = proc.stderr
         
+        if stderr:
+            lines = stderr.strip().split('\n')
+            final_err = lines[-1] if lines else 'Unknown Python Error'
+            stderr = f"Execution Error System Output:\n{final_err}\n\n(Line numbers & locations are hidden for the debugging challenge)"
+
+        
         # Parse test results from stdout
         if "__RESULTS_START__" in stdout and "__RESULTS_END__" in stdout:
             parts = stdout.split("__RESULTS_START__")[1].split("__RESULTS_END__")[0].strip()
