@@ -36,6 +36,8 @@ def register():
             if existing_pid.email == email:
                 session['participant_id'] = existing_pid.participant_id
                 session['session_token'] = existing_pid.session_token
+                if existing_pid.status not in ['round2_active', 'completed']:
+                    session.pop('r2_track', None)
                 flash(f'Welcome back, {existing_pid.name}! Resuming your session.', 'info')
                 if existing_pid.status == 'completed':
                     return redirect(url_for('participant.result'))
@@ -65,6 +67,7 @@ def register():
 
         session['participant_id'] = participant.participant_id
         session['session_token'] = token
+        session.pop('r2_track', None)
         flash('Registration successful! Please review the competition rules.', 'success')
         return redirect(url_for('participant.rules'))
 
@@ -102,7 +105,7 @@ def result():
     # Calculate performance rating and percentage
     max_score = 170.0 # 100 R1 + 70 R2
     if comp:
-        max_score = (comp.r1_points_per_question * 20) + (comp.r2_points_per_question * 5)
+        max_score = (comp.r1_points_per_question * 5) + (25 * 2) # New config constraint
         
     pct = round((participant.total_score / max_score * 100), 2) if max_score > 0 else 0.0
     

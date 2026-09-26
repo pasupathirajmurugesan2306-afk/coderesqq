@@ -95,6 +95,7 @@ def finish_round1():
         flash('Round 1 submitted successfully! You are now entering Round 2.', 'success')
         
     comp = Competition.query.first()
+    session.pop('r2_track', None) # Force track selection
     if comp and comp.r2_enabled:
         return redirect(url_for('competition.round2'))
     return redirect(url_for('participant.result'))
