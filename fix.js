@@ -1,0 +1,22 @@
+const fs = require('fs');
+let js = fs.readFileSync('static/js/ide_round2.js', 'utf-8');
+js = js.replace(/language: 'java',/g, "language: questions[0]?.language || 'java',");
+js = js.replace(/updateErrorMeter\(fixedCount, statusList = null\)/g, 'updateErrorMeter(fixedCount, totalErrors, statusList = null)');
+js = js.replace(/\\$\{fixedCount\} \/ 7\/g, '\${fixedCount} / \');
+js = js.replace(/i \<= 7/g, 'i <= totalErrors');
+js = js.replace(/updateErrorMeter\(q\.errors_fixed_count \|\| 0\);/g, 'updateErrorMeter(q.errors_fixed_count || 0, q.total_errors || 7);');
+js = js.replace(/updateErrorMeter\(fixedCount, data\.fixed_status_list\);/g, 'updateErrorMeter(fixedCount, q.total_errors || 7, data.fixed_status_list);');
+js = js.replace(/updateErrorMeter\(fixedCount\);/g, 'updateErrorMeter(fixedCount, q.total_errors || 7);');
+js = js.replace(/q\.errors_fixed_count === 7/g, 'q.errors_fixed_count === (q.total_errors || 7)');
+js = js.replace(/fixedCount === 7/g, 'fixedCount === (q.total_errors || 7)');
+js = js.replace(/\$\{fixedCount\} of 7/g, ' of ');
+js = js.replace(/\$\{fixedCount\}\/7/g, '/');
+js = js.replace(/Java source/g, 'source');
+js = js.replace(/Java solution/g, 'solution');
+js = js.replace(/Java Errors/g, 'Errors');
+js = js.replace(/Java Analysis/g, 'Analysis');
+js = js.replace(/Java code/g, 'code');
+js = js.replace(/2 Marks \/ Error/g, 'Points evenly distributed');
+
+fs.writeFileSync('static/js/ide_round2.js', js);
+console.log('done');

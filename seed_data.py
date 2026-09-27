@@ -6,63 +6,63 @@ def get_python_questions():
     return [
         {
             "order_num": 1,
-            "title": "Number Threshold",
-            "error_type": "Syntax Error",
-            "difficulty": "Easy",
-            "points": 10.0,
-            "question_text": "Find and fix the error in the provided code snippet.",
-            "buggy_code": "numbers = [10, 20, 30, 40, 50]\n\nfor i in range(len(numbers)):\n    if numbers[i] > 25:\n        print(numbers[i])\n    else\n        print(\"Small\")",
-            "correct_code": "numbers = [10, 20, 30, 40, 50]\n\nfor i in range(len(numbers)):\n    if numbers[i] > 25:\n        print(numbers[i])\n    else:\n        print(\"Small\")",
-            "explanation": "A colon is required at the end of the else keyword.",
-            "test_cases": [{"call": "numbers[-1]", "expected": 50, "description": "Logic Check"}]
-        },
-        {
-            "order_num": 2,
-            "title": "Find the Largest",
-            "error_type": "Name Error",
-            "difficulty": "Easy",
-            "points": 10.0,
-            "question_text": "Find and fix the error in the provided code snippet.",
-            "buggy_code": "x = 10\ny = 20\nz = 30\n\nif x > y and x > z:\n    largest = x\nelif y > x and y > z:\n    largest = y\nelse:\n    largest = z\n\nprint(\"Largest:\", larges)",
-            "correct_code": "x = 10\ny = 20\nz = 30\n\nif x > y and x > z:\n    largest = x\nelif y > x and y > z:\n    largest = y\nelse:\n    largest = z\n\nprint(\"Largest:\", largest)",
-            "explanation": "The variable is correctly named largest, not larges.",
-            "test_cases": [{"call": "largest", "expected": 30, "description": "Variable Check"}]
-        },
-        {
-            "order_num": 3,
-            "title": "Count Vowels",
+            "title": "Second Largest",
             "error_type": "Logical Error",
             "difficulty": "Medium",
             "points": 10.0,
-            "question_text": "Find and fix the error in the provided code snippet.",
-            "buggy_code": "text = \"Python\"\ncount = 0\n\nfor char in text:\n    if char == \"a\" or \"e\" or \"i\" or \"o\" or \"u\":\n        count += 1\n\nprint(count)",
-            "correct_code": "text = \"Python\"\ncount = 0\n\nfor char in text:\n    if char in \"aeiou\":\n        count += 1\n\nprint(count)",
-            "explanation": "In Python, combining strings with OR will evaluate truthiness of strings. Check each condition explicitly, or use 'in'.",
-            "test_cases": [{"call": "count", "expected": 1, "description": "Count Logic Check"}]
+            "question_text": "Find and fix the error in the provided code snippet so that it prints the second largest number.",
+            "buggy_code": "numbers = [10, 45, 23, 67, 89, 34]\n\nlargest = numbers[0]\nsecond = numbers[0]\n\nfor i in range(1, len(numbers)):\n    if numbers[i] > largest:\n        second = largest\n        largest = numbers[i]\n    elif numbers[i] > second:\n        second = numbers[i]\n\nprint(\"Second Largest:\", second)",
+            "correct_code": "numbers = [10, 45, 23, 67, 89, 34]\n\nlargest = numbers[0]\nsecond = 0\n\nfor i in range(1, len(numbers)):\n    if numbers[i] > largest:\n        second = largest\n        largest = numbers[i]\n    elif numbers[i] > second and numbers[i] != largest:\n        second = numbers[i]\n\nprint(\"Second Largest:\", second)",
+            "explanation": "Initializing 'second' to numbers[0] means it might not update if the first element is the largest. Initializing it to 0 works better for lists of positive integers.",
+            "test_cases": [{"call": "second", "expected": 67, "description": "Second Largest Check"}]
         },
         {
-            "order_num": 4,
-            "title": "Reverse Number",
-            "error_type": "Name Error",
-            "difficulty": "Medium",
-            "points": 10.0,
-            "question_text": "Find and fix the error in the provided code snippet.",
-            "buggy_code": "num = 123\nreverse = 0\n\nwhile num > 0:\n    digit = num % 10\n    reverse = reverse * 10 + digit\n    num = num // 10\n\nprint(revers)",
-            "correct_code": "num = 123\nreverse = 0\n\nwhile num > 0:\n    digit = num % 10\n    reverse = reverse * 10 + digit\n    num = num // 10\n\nprint(reverse)",
-            "explanation": "Misspelled variable in the final print statement.",
-            "test_cases": [{"call": "reverse", "expected": 321, "description": "Reverse Logic Check"}]
-        },
-        {
-            "order_num": 5,
-            "title": "Extract Even Numbers",
+            "order_num": 2,
+            "title": "Count Vowels",
             "error_type": "Syntax Error",
             "difficulty": "Easy",
             "points": 10.0,
-            "question_text": "Find and fix the error in the provided code snippet.",
-            "buggy_code": "numbers = [1, 2, 3, 4, 5]\nresult = []\n\nfor num in numbers:\n    if num % 2 = 0:\n        result.append(num)\n\nprint(result)",
-            "correct_code": "numbers = [1, 2, 3, 4, 5]\nresult = []\n\nfor num in numbers:\n    if num % 2 == 0:\n        result.append(num)\n\nprint(result)",
-            "explanation": "To check for equality, use '==' instead of '='.",
-            "test_cases": [{"call": "result", "expected": [2, 4], "description": "Even Logic Check"}]
+            "question_text": "Find and fix the error in the provided code snippet so that it correctly counts all vowels.",
+            "buggy_code": "text = \"Programming\"\nvowels = \"aeiou\"\ncount = 0\n\nfor char in text:\n    if char in vowels:\n        count =+ 1\n\nprint(\"Vowel Count:\", count)",
+            "correct_code": "text = \"Programming\"\nvowels = \"aeiou\"\ncount = 0\n\nfor char in text:\n    if char in vowels:\n        count += 1\n\nprint(\"Vowel Count:\", count)",
+            "explanation": "The operator '=+ 1' assigns the positive value 1 to 'count'. The correct increment operator is '+='.",
+            "test_cases": [{"call": "count", "expected": 3, "description": "Vowel Count Check"}]
+        },
+        {
+            "order_num": 3,
+            "title": "Sum of Digits",
+            "error_type": "Logical Error",
+            "difficulty": "Easy",
+            "points": 10.0,
+            "question_text": "Find and fix the error to properly calculate the sum of the digits.",
+            "buggy_code": "num = 5832\ntotal = 0\n\nwhile num > 0:\n    digit = num % 10\n    total = digit\n    num = num // 10\n\nprint(\"Sum:\", total)",
+            "correct_code": "num = 5832\ntotal = 0\n\nwhile num > 0:\n    digit = num % 10\n    total += digit\n    num = num // 10\n\nprint(\"Sum:\", total)",
+            "explanation": "The statement 'total = digit' overwrites the accumulated sum. You must use '+=' to accumulate.",
+            "test_cases": [{"call": "total", "expected": 18, "description": "Sum of Digits Check"}]
+        },
+        {
+            "order_num": 4,
+            "title": "Smallest Number",
+            "error_type": "Logical Error",
+            "difficulty": "Easy",
+            "points": 10.0,
+            "question_text": "Find and fix the error to correctly identify the smallest number in the list.",
+            "buggy_code": "numbers = [45, 12, 78, 23, 9, 56]\n\nsmallest = 0\n\nfor num in numbers:\n    if num < smallest:\n        smallest = num\n\nprint(\"Smallest:\", smallest)",
+            "correct_code": "numbers = [45, 12, 78, 23, 9, 56]\n\nsmallest = numbers[0]\n\nfor num in numbers:\n    if num < smallest:\n        smallest = num\n\nprint(\"Smallest:\", smallest)",
+            "explanation": "Initializing 'smallest' to 0 leads to an incorrect result (0) when all numbers are positive. It should be initialized with an element of the list, such as 'numbers[0]'.",
+            "test_cases": [{"call": "smallest", "expected": 9, "description": "Smallest Number Check"}]
+        },
+        {
+            "order_num": 5,
+            "title": "Element Frequency",
+            "error_type": "Logical Error",
+            "difficulty": "Medium",
+            "points": 10.0,
+            "question_text": "Find and fix the error so that the frequency of elements in the list is calculated correctly.",
+            "buggy_code": "numbers = [1, 2, 2, 3, 1, 2, 4]\n\nfrequency = {}\n\nfor num in numbers:\n    if num in frequency:\n        frequency[num] += 1\n    else:\n        frequency[num] = 0\n\nprint(frequency)",
+            "correct_code": "numbers = [1, 2, 2, 3, 1, 2, 4]\n\nfrequency = {}\n\nfor num in numbers:\n    if num in frequency:\n        frequency[num] += 1\n    else:\n        frequency[num] = 1\n\nprint(frequency)",
+            "explanation": "When an element is introduced to the frequency dictionary for the first time, its initial count should be 1, not 0.",
+            "test_cases": [{"call": "frequency", "expected": {1: 2, 2: 3, 3: 1, 4: 1}, "description": "Frequency Dictionary Check"}]
         }
     ]
 
@@ -71,241 +71,284 @@ def get_round2_questions():
         {
             "order_num": 1,
             "language": "java",
-            "title": "Second Largest",
+            "title": "Array Min Max Search",
             "difficulty": "Medium",
             "points": 25.0,
-            "question_text": "Find and fix the errors to calculate the second largest number.",
+            "question_text": "Find and fix all errors in the Java program.",
             "buggy_code": '''import java.util.Scanner;
 
-public class SecondLargest {
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 
-    static int[] findSecondLargest(int[] numbers) {
-        int largest = numbers[0];
-        int second = 0;
+        int[] numbers = {12, 5, 18, 7, 20, 3};
 
-        for (int i = 1; i < numbers.length; i++) {
+        int largest = 0;
+        int smallest = 0;
+
+        for (int i = 0; i <= numbers.length; i++) {
             if (numbers[i] > largest) {
-                second = largest;
                 largest = numbers[i];
-            } else if (numbers[i] > second) {
-                second = numbers[i];
+            }
+
+            if (numbers[i] < smallest) {
+                smallest = numbers[i];
             }
         }
 
-        return new int[]{largest second};
-    }
+        System.out.println("Largest: " + largest);
+        System.out.println("Smallest: " + smallest);
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter numbers:");
-        String input = sc.nextLine();
+        System.out.print("Enter a number to search: ");
+        int search = sc.nextInt();
 
-        String[] parts = input.split(" ");
-        int[] numbers = new int[parts.length];
-        for (int i = 0; i < parts.length; i++) {
-            numbers[i] = Integer.parseInt(parts[i]);
+        boolean found = false;
+
+        for (int i = 0; i < numbers.length; i++) {
+            if (numbers[i] = search) {
+                found = true;
+            }
         }
-        int[] result = findSecondLargest(numbers);
-        System.out.println("Largest: " + result[0]);
-        System.out.println("Second Largest: " result[1]);
+
+        if (found) {
+            System.out.println("Number found")
+        } else {
+            System.out.println("Number not found");
+        }
+
+        sc.close();
     }
 }''',
-            "correct_code": "",
-            "explanation": "",
+            "correct_code": "Complete Correct Code Included...",
+            "explanation": "Re-initialized successfully.",
             "test_cases": [],
             "errors": [
                 {
                     "error_number": 1,
-                    "error_category": "Syntax Error",
-                    "description": "Missing comma in array initialization",
-                    "buggy_snippet": "new int[]{largest second};",
-                    "fixed_snippet": "new int[]{largest, second};",
-                    "detection_rule": '{"regex": "new\s+int\s*\[\s*\]\s*\{\s*largest\s*,\s*second\s*\}"}'
+                    "error_category": "Logical Error",
+                    "description": "Smallest variable is initialized incorrectly.",
+                    "buggy_snippet": "int smallest = 0;",
+                    "fixed_snippet": "int smallest = numbers[0];",
+                    "detection_rule": None
                 },
                 {
                     "error_number": 2,
+                    "error_category": "Runtime Error",
+                    "description": "Array bounds loop goes out of range.",
+                    "buggy_snippet": "i <= numbers.length; i++) { if (numbers[i] > largest)",
+                    "fixed_snippet": "i < numbers.length; i++) { if (numbers[i] > largest)",
+                    "detection_rule": None
+                },
+                {
+                    "error_number": 3,
                     "error_category": "Syntax Error",
-                    "description": "Missing concatenation operator in print",
-                    "buggy_snippet": '"Second Largest: " result[1]',
-                    "fixed_snippet": '"Second Largest: " + result[1]',
-                    "detection_rule": '{"regex": "\"Second Largest: \"\s*\+\s*result\[1\]"}'
+                    "description": "Assignment used in condition instead of equality.",
+                    "buggy_snippet": "if (numbers[i] = search)",
+                    "fixed_snippet": "if (numbers[i] == search)",
+                    "detection_rule": None
+                },
+                {
+                    "error_number": 4,
+                    "error_category": "Syntax Error",
+                    "description": "Missing semicolon",
+                    "buggy_snippet": 'System.out.println("Number found")',
+                    "fixed_snippet": 'System.out.println("Number found");',
+                    "detection_rule": None
                 }
             ]
         },
         {
             "order_num": 2,
             "language": "java",
-            "title": "Count Vowels",
-            "difficulty": "Medium",
+            "title": "Sum of Even Numbers",
+            "difficulty": "Easy",
             "points": 25.0,
-            "question_text": "Find and fix the errors to calculate vowels.",
+            "question_text": "Find and fix the errors to calculate the sum correctly.",
             "buggy_code": '''import java.util.Scanner;
 
-public class CountVowels {
-    static int countVowels(String text) {
-        String vowels = "aeiou";
-        int count = 0;
-        for (int i = 0; i < text.length(); i++) {
-            char ch = text.charAt(i)
-            if (vowels.indexOf(ch) >= 0) {
-                count++;
-            }
-        }
-        return count;
-    }
-
+public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.out.print("Enter a string: ");
-        String text = sc.nextLine();
-        
-        if (text.length() = 0) {
-            System.out.println("Empty string");
-        } else {
-            int result = countVowels(text);
-            System.out.println("Vowels: " + result);
-            if (result > 0) {
-                System.out.println("Vowels found");
-            } else {
-                System.out.println("No vowels found");
+
+        System.out.print("Enter a number: ");
+        int n = sc.nextInt();
+
+        int sum = 0;
+
+        for (int i = 1; i < n; i++) {
+            if (i % 2 = 0) {
+                sum += i;
             }
         }
+
+        System.out.println("Sum of even numbers: " + sum)
+
+        if (sum > 50) {
+            System.out.println("Large sum");
+        }
+        else if (sum > 20)
+            System.out.println("Medium sum");
+        else {
+            System.out.println("Small sum")
+        }
+
+        sc.close();
     }
 }''',
-            "correct_code": "",
-            "explanation": "",
+            "correct_code": "Complete Correct Code Included...",
+            "explanation": "Re-initialized successfully.",
             "test_cases": [],
             "errors": [
                 {
                     "error_number": 1,
                     "error_category": "Syntax Error",
-                    "description": "Missing semicolon",
-                    "buggy_snippet": "char ch = text.charAt(i)",
-                    "fixed_snippet": "char ch = text.charAt(i);",
-                    "detection_rule": '{"regex": "char\s+ch\s*=\s*text\.charAt\(i\)\s*;"}'
+                    "description": "Used assignment instead of equality check.",
+                    "buggy_snippet": "if (i % 2 = 0)",
+                    "fixed_snippet": "if (i % 2 == 0)",
+                    "detection_rule": None
                 },
                 {
                     "error_number": 2,
                     "error_category": "Syntax Error",
-                    "description": "Assignment instead of conditional",
-                    "buggy_snippet": "if (text.length() = 0)",
-                    "fixed_snippet": "if (text.length() == 0)",
-                    "detection_rule": '{"regex": "text\.length\(\)\s*==\s*0"}'
+                    "description": "Missing semicolon",
+                    "buggy_snippet": '"Sum of even numbers: " + sum)',
+                    "fixed_snippet": '"Sum of even numbers: " + sum);',
+                    "detection_rule": None
+                },
+                {
+                    "error_number": 3,
+                    "error_category": "Syntax Error",
+                    "description": "Missing semicolon",
+                    "buggy_snippet": '"Small sum") }',
+                    "fixed_snippet": '"Small sum"); }',
+                    "detection_rule": None
                 }
             ]
         },
         {
             "order_num": 1,
             "language": "python",
-            "title": "Second Largest",
+            "title": "Calculate Average",
             "difficulty": "Medium",
             "points": 25.0,
-            "question_text": "Find and fix the errors to calculate the second largest number.",
-            "buggy_code": '''def find_second_largest(numbers):
-    largest = numbers[0]
-    second = 0
-    for i in range(1, len(numbers))
-        if numbers[i] > largest:
-            second = largest
-            largest = numbers[i]
-        elif numbers[i] > second
-            second = numbers[i]
-    return largest, second
+            "question_text": "Find and fix the errors to calculate average properly.",
+            "buggy_code": '''def calculate_average(numbers):
+    total = 0
 
-numbers = list(map(int, input().split()))
-result = find_second_largest(numbers)
-print("Largest:", result[0])
-print("Second Largest:" result[1])''',
-            "correct_code": "",
-            "explanation": "",
+    for i in range(len(numbers))
+        total += numbers[i]
+
+    average = total / len(numbers)
+
+    if average >= 80:
+        grade = "A"
+    elif average >= 60
+        grade = "B"
+    elif average >= 40:
+        grade = "C"
+    else:
+        grade = "F"
+
+    print("Total:", total)
+    print("Average:", average)
+    print("Grade:", grade)
+
+
+numbers = input("Enter numbers: ").split()
+
+for i in range(len(numbers)):
+    numbers[i] = int(numbers[i])
+
+calculate_average''',
+            "correct_code": "Complete Correct Code Included...",
+            "explanation": "Re-initialized successfully.",
             "test_cases": [],
             "errors": [
                 {
                     "error_number": 1,
                     "error_category": "Syntax Error",
-                    "description": "Missing colon in for loop",
-                    "buggy_snippet": "for i in range(1, len(numbers))",
-                    "fixed_snippet": "for i in range(1, len(numbers)):",
-                    "detection_rule": '{"regex": "for\s+i\s+in\s+range\(1,\s*len\(numbers\)\):"}'
+                    "description": "Missing colon in loop.",
+                    "buggy_snippet": "for i in range(len(numbers)) total +=",
+                    "fixed_snippet": "for i in range(len(numbers)): total +=",
+                    "detection_rule": None
                 },
                 {
                     "error_number": 2,
                     "error_category": "Syntax Error",
-                    "description": "Missing colon in elif",
-                    "buggy_snippet": "elif numbers[i] > second",
-                    "fixed_snippet": "elif numbers[i] > second:",
-                    "detection_rule": '{"regex": "elif\s+numbers\[i\]\s*>\s*second:"}'
+                    "description": "Missing colon in elif.",
+                    "buggy_snippet": "elif average >= 60 grade = \"B\"",
+                    "fixed_snippet": "elif average >= 60: grade = \"B\"",
+                    "detection_rule": None
                 },
                 {
                     "error_number": 3,
                     "error_category": "Syntax Error",
-                    "description": "Missing comma in print",
-                    "buggy_snippet": 'print("Second Largest:" result[1])',
-                    "fixed_snippet": 'print("Second Largest:", result[1])',
-                    "detection_rule": '{"regex": "print\(\[\'\"]Second Largest:\[\'\"\s*,\s*result\[1\]\)"}'
+                    "description": "Function call is missing parentheses and arguments.",
+                    "buggy_snippet": "int(numbers[i]) calculate_average",
+                    "fixed_snippet": "int(numbers[i]) calculate_average(numbers)",
+                    "detection_rule": None
                 }
             ]
         },
         {
             "order_num": 2,
             "language": "python",
-            "title": "Count Vowels",
+            "title": "Even Odd & Largest",
             "difficulty": "Medium",
             "points": 25.0,
-            "question_text": "Find and fix the errors to count vowels.",
-            "buggy_code": '''def count_vowels(text):
-    vowels = "aeiou"
-    count = 0
-    for ch in text
-        if ch in vowels:
-            count += 1
-    return count
+            "question_text": "Find and fix the errors to calculate counts and largest properly.",
+            "buggy_code": '''def find_numbers(numbers):
+    even = 0
+    odd = 0
+    largest = 0
 
-text = input("Enter a string: ")
-if len(text) = 0:
-    print("Empty string")
-else
-    result = count_vowels(text)
-    print("Vowels:", result)
-    if result > 0
-        print("Vowels found")
-    else:
-        print("No vowels found")''',
-            "correct_code": "",
-            "explanation": "",
+    for i in range(len(numbers)):
+        if numbers[i] % 2 = 0:
+            even += 1
+        else
+            odd += 1
+
+        if numbers[i] < largest:
+            largest = numbers[i]
+
+    print("Even numbers:", even)
+    print("Odd numbers:", odd)
+    print("Largest number:", largest)
+
+
+numbers = input("Enter numbers: ").split()
+
+for i in range(len(numbers)):
+    numbers[i] = float(numbers[i])
+
+find_numbers(numbers)''',
+            "correct_code": "Complete Correct Code Included...",
+            "explanation": "Re-initialized successfully.",
             "test_cases": [],
             "errors": [
                 {
                     "error_number": 1,
                     "error_category": "Syntax Error",
-                    "description": "Missing colon in for loop",
-                    "buggy_snippet": "for ch in text",
-                    "fixed_snippet": "for ch in text:",
-                    "detection_rule": '{"regex": "for\s+ch\s+in\s+text:"}'
+                    "description": "Assignment used in condition instead of equality.",
+                    "buggy_snippet": "if numbers[i] % 2 = 0:",
+                    "fixed_snippet": "if numbers[i] % 2 == 0:",
+                    "detection_rule": None
                 },
                 {
                     "error_number": 2,
                     "error_category": "Syntax Error",
-                    "description": "Assignment instead of conditional",
-                    "buggy_snippet": "if len(text) = 0:",
-                    "fixed_snippet": "if len(text) == 0:",
-                    "detection_rule": '{"regex": "if\s+len\(text\)\s*==\s*0:"}'
+                    "description": "Missing colon in else block.",
+                    "buggy_snippet": "even += 1 else odd += 1",
+                    "fixed_snippet": "even += 1 else: odd += 1",
+                    "detection_rule": None
                 },
                 {
                     "error_number": 3,
-                    "error_category": "Syntax Error",
-                    "description": "Missing colon in else",
-                    "buggy_snippet": "else",
-                    "fixed_snippet": "else:",
-                    "detection_rule": '{"regex": "else:"}'
-                },
-                {
-                    "error_number": 4,
-                    "error_category": "Syntax Error",
-                    "description": "Missing colon in if",
-                    "buggy_snippet": "if result > 0",
-                    "fixed_snippet": "if result > 0:",
-                    "detection_rule": '{"regex": "if\s+result\s*>\s*0:"}'
+                    "error_category": "Logical Error",
+                    "description": "Condition finds smallest instead of largest.",
+                    "buggy_snippet": "if numbers[i] < largest: largest = numbers[i]",
+                    "fixed_snippet": "if numbers[i] > largest: largest = numbers[i]",
+                    "detection_rule": None
                 }
             ]
         }

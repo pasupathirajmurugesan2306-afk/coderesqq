@@ -110,7 +110,22 @@ if __name__ == '__main__':
         if stderr:
             lines = stderr.strip().split('\n')
             final_err = lines[-1] if lines else 'Unknown Python Error'
-            stderr = f"Execution Error System Output:\n{final_err}\n\n(Line numbers & locations are hidden for the debugging challenge)"
+            
+            line_num = "?"
+            for text_line in lines:
+                if "line " in text_line:
+                    try:
+                        # try to parse typical traceback format '  File "xxx", line Y'
+                        extracted = text_line.split("line ")[1].split(',')[0].strip()
+                        raw_line = int(extracted)
+                        # user_code starts at line 7 in the temp_path
+                        calc_line = raw_line - 6
+                        line_num = str(max(1, calc_line))
+                        break
+                    except:
+                        pass
+            
+            stderr = f"Execution Error System Output:\nLine {line_num} -> {final_err}"
 
         
         # Parse test results from stdout

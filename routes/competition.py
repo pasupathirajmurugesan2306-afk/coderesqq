@@ -267,7 +267,7 @@ def api_submit_code():
     errors_fixed_count = 0
     eval_details = {}
 
-    if question.language == 'python':
+    if question.round == 1:
         # Evaluate against ALL test cases (visible + hidden)
         eval_res = run_python_code(user_code, question.test_cases)
         eval_details = eval_res
@@ -277,8 +277,8 @@ def api_submit_code():
         else:
             score = 0.0
             status = 'failed'
-    else: # Java
-        eval_res = evaluate_multi_error_code(user_code, question.java_errors, question.test_cases, question)
+    else: # Round 2 (both Java and Python multi-error checks)
+        eval_res = evaluate_multi_error_code(user_code, question.java_errors, language=question.language)
         eval_details = eval_res
         errors_fixed_count = eval_res['errors_fixed_count']
         score = round(errors_fixed_count * pts_per_error2, 2)
