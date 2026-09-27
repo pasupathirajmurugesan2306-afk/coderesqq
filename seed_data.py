@@ -11,8 +11,8 @@ def get_python_questions():
             "difficulty": "Medium",
             "points": 10.0,
             "question_text": "Find and fix the error in the provided code snippet so that it prints the second largest number.",
-            "buggy_code": "numbers = [10, 45, 23, 67, 89, 34]\n\nlargest = numbers[0]\nsecond = numbers[0]\n\nfor i in range(1, len(numbers)):\n    if numbers[i] > largest:\n        second = largest\n        largest = numbers[i]\n    elif numbers[i] > second:\n        second = numbers[i]\n\nprint(\"Second Largest:\", second)",
-            "correct_code": "numbers = [10, 45, 23, 67, 89, 34]\n\nlargest = numbers[0]\nsecond = 0\n\nfor i in range(1, len(numbers)):\n    if numbers[i] > largest:\n        second = largest\n        largest = numbers[i]\n    elif numbers[i] > second and numbers[i] != largest:\n        second = numbers[i]\n\nprint(\"Second Largest:\", second)",
+            "buggy_code": "numbers = [89, 45, 23, 67, 10, 34]\n\nlargest = numbers[0]\nsecond = numbers[0]\n\nfor i in range(1, len(numbers)):\n    if numbers[i] > largest:\n        second = largest\n        largest = numbers[i]\n    elif numbers[i] > second:\n        second = numbers[i]\n\nprint(\"Second Largest:\", second)",
+            "correct_code": "numbers = [89, 45, 23, 67, 10, 34]\n\nlargest = numbers[0]\nsecond = 0\n\nfor i in range(1, len(numbers)):\n    if numbers[i] > largest:\n        second = largest\n        largest = numbers[i]\n    elif numbers[i] > second and numbers[i] != largest:\n        second = numbers[i]\n\nprint(\"Second Largest:\", second)",
             "explanation": "Initializing 'second' to numbers[0] means it might not update if the first element is the largest. Initializing it to 0 works better for lists of positive integers.",
             "test_cases": [{"call": "second", "expected": 67, "description": "Second Largest Check"}]
         },
