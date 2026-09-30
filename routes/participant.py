@@ -103,9 +103,7 @@ def result():
     comp = Competition.query.first()
     
     # Calculate performance rating and percentage
-    max_score = 170.0 # 100 R1 + 70 R2
-    if comp:
-        max_score = (comp.r1_points_per_question * 5) + (25 * 2) # New config constraint
+    max_score = 100.0 # 50 R1 + 50 R2
         
     pct = round((participant.total_score / max_score * 100), 2) if max_score > 0 else 0.0
     

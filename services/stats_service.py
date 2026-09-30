@@ -60,22 +60,20 @@ def get_admin_dashboard_metrics():
     avg_r2_score = db.session.query(func.avg(Participant.r2_score)).scalar() or 0.0
 
     # Score Distribution buckets
-    # 0-30, 31-60, 61-90, 91-120, 121-150, 151-170
+    # 0-20, 21-40, 41-60, 61-80, 81-100
     all_scores = [p.total_score for p in Participant.query.all()]
-    buckets = {'0-30': 0, '31-60': 0, '61-90': 0, '91-120': 0, '121-150': 0, '151-170': 0}
+    buckets = {'0-20': 0, '21-40': 0, '41-60': 0, '61-80': 0, '81-100': 0}
     for s in all_scores:
-        if s <= 30:
-            buckets['0-30'] += 1
+        if s <= 20:
+            buckets['0-20'] += 1
+        elif s <= 40:
+            buckets['21-40'] += 1
         elif s <= 60:
-            buckets['31-60'] += 1
-        elif s <= 90:
-            buckets['61-90'] += 1
-        elif s <= 120:
-            buckets['91-120'] += 1
-        elif s <= 150:
-            buckets['121-150'] += 1
+            buckets['41-60'] += 1
+        elif s <= 80:
+            buckets['61-80'] += 1
         else:
-            buckets['151-170'] += 1
+            buckets['81-100'] += 1
 
     # College breakdown
     college_counts = db.session.query(Participant.college, func.count(Participant.id))\

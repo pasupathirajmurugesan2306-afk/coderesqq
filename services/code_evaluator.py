@@ -59,8 +59,14 @@ def _run_tests():
             if call_code:
                 # Evaluate expression
                 actual = eval(call_code)
-                test_res['actual'] = actual if not is_hidden else ('MATCH' if actual == expected else 'MISMATCH')
-                if actual == expected:
+                try:
+                    # Convert actual to dict with string keys if it has int keys, to match JSON serialization of expected
+                    actual_cmp = json.loads(json.dumps(actual))
+                except Exception:
+                    actual_cmp = actual
+                    
+                test_res['actual'] = actual_cmp if not is_hidden else ('MATCH' if actual_cmp == expected else 'MISMATCH')
+                if actual_cmp == expected or actual == expected:
                     test_res['passed'] = True
                 else:
                     all_passed = False
