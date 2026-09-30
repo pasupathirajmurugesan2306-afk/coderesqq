@@ -6,15 +6,15 @@ def get_python_questions():
     return [
         {
             "order_num": 1,
-            "title": "Second Largest",
+            "title": "First Missing Positive",
             "error_type": "Logical Error",
             "difficulty": "Medium",
             "points": 10.0,
-            "question_text": "Find and fix the error in the provided code snippet so that it prints the second largest number.",
-            "buggy_code": "numbers = [89, 45, 23, 67, 10, 34]\n\nlargest = numbers[0]\nsecond = numbers[0]\n\nfor i in range(1, len(numbers)):\n    if numbers[i] > largest:\n        second = largest\n        largest = numbers[i]\n    elif numbers[i] > second:\n        second = numbers[i]\n\nprint(\"Second Largest:\", second)",
-            "correct_code": "numbers = [89, 45, 23, 67, 10, 34]\n\nlargest = numbers[0]\nsecond = 0\n\nfor i in range(1, len(numbers)):\n    if numbers[i] > largest:\n        second = largest\n        largest = numbers[i]\n    elif numbers[i] > second and numbers[i] != largest:\n        second = numbers[i]\n\nprint(\"Second Largest:\", second)",
-            "explanation": "Initializing 'second' to numbers[0] means it might not update if the first element is the largest. Initializing it to 0 works better for lists of positive integers.",
-            "test_cases": [{"call": "second", "expected": 67, "description": "Second Largest Check"}]
+            "question_text": "Find and fix the error in the provided code snippet so that it correctly identifies the first missing positive integer.",
+            "buggy_code": "numbers = [3, 4, -1, 1, 2]\n\nmissing = 1\n\nfor num in numbers:\n    if num == missing:\n        missing += 1\n\nprint(\"First Missing Positive:\", missing)",
+            "correct_code": "numbers = [3, 4, -1, 1, 2]\n\nnumbers.sort()\n\nmissing = 1\n\nfor num in numbers:\n    if num == missing:\n        missing += 1\n\nprint(\"First Missing Positive:\", missing)",
+            "explanation": "The algorithm works by checking the numbers in ascending order. Without sorting the list first (numbers.sort()), it fails to identify sequence gaps correctly.",
+            "test_cases": [{"call": "missing", "expected": 5, "description": "First Missing Positive Check"}]
         },
         {
             "order_num": 2,
