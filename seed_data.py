@@ -177,55 +177,51 @@ print("Program completed")""",
         {
             "order_num": 1,
             "language": "java",
-            "title": "Sum and Average",
+            "title": "Sum Average",
             "difficulty": "Medium",
             "points": 25.0,
-            "question_text": "Find and fix the 7 errors in the Java program.",
+            "question_text": "Find and fix the 6 errors in the Java program.",
             "buggy_code": """import java.util.Scanner;
 
-public class Main {
+class SumAverage {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in)
+        Scanner sc = new Scanner(System.in);
 
-        System.out.print("Enter a number: ");
+        System.out.print("Enter number of elements: ");
         int n = sc.nextInt();
 
-        int sum = 0
-        int evenCount = 0;
+        int[] arr = new int[n];
 
-        for (int i = 1; i <= n; i++) {
-            if (i % 2 = 0) {
-                sum += i;
-                evenCount++
-            }
+        System.out.println("Enter " + n + " numbers:");
+
+        for (int i = 0; i <= n; i++) {
+            arr[i] = sc.nextInt();
         }
 
-        double average = sum / evenCount;
+        int sum = 0;
 
-        System.out.println("Even sum: " + sum);
-        System.out.println("Even count: " + evenCount);
-        System.out.println("Average: " + average)
-
-        if (average > 10) {
-            System.out.println("Average is high")
-        } else {
-            System.out.println("Average is low");
+        for (int i = 0; i < n; i++) {
+            sum =+ arr[i];
         }
 
-        sc.close();
+        double average = sum / n;
+
+        System.out.println("Sum = " + sum)
+        System.out.println("Average = " + average);
+
+        sc.close
     }
 }""",
             "correct_code": "",
             "explanation": "",
             "test_cases": [],
             "errors": [
-                {"error_number": 1, "error_category": "Syntax Error", "description": "Missing semicolon", "buggy_snippet": "Scanner sc = new Scanner(System.in)", "fixed_snippet": "Scanner sc = new Scanner(System.in);", "detection_rule": None},
-                {"error_number": 2, "error_category": "Syntax Error", "description": "Missing semicolon", "buggy_snippet": "int sum = 0 int evenCount", "fixed_snippet": "int sum = 0; int evenCount", "detection_rule": None},
-                {"error_number": 3, "error_category": "Syntax Error", "description": "Assignment instead of equality", "buggy_snippet": "if (i % 2 = 0)", "fixed_snippet": "if (i % 2 == 0)", "detection_rule": None},
-                {"error_number": 4, "error_category": "Syntax Error", "description": "Missing semicolon", "buggy_snippet": "evenCount++ }", "fixed_snippet": "evenCount++; }", "detection_rule": None},
-                {"error_number": 5, "error_category": "Logical Error", "description": "Integer division", "buggy_snippet": "sum / evenCount;", "fixed_snippet": "(double) sum / evenCount;", "detection_rule": None},
-                {"error_number": 6, "error_category": "Syntax Error", "description": "Missing semicolon", "buggy_snippet": '"Average: " + average)', "fixed_snippet": '"Average: " + average);', "detection_rule": None},
-                {"error_number": 7, "error_category": "Syntax Error", "description": "Missing semicolon", "buggy_snippet": '"Average is high") }', "fixed_snippet": '"Average is high"); }', "detection_rule": None}
+                {"error_number": 1, "error_category": "Syntax Error", "description": "Class name should be Main (usually requires public class Main)", "buggy_snippet": "class SumAverage {", "fixed_snippet": "public class Main {", "detection_rule": None},
+                {"error_number": 2, "error_category": "Runtime Error", "description": "Array bounds loop goes out of range", "buggy_snippet": "i <= n; i++) {\n            arr[i]", "fixed_snippet": "i < n; i++) {\n            arr[i]", "detection_rule": None},
+                {"error_number": 3, "error_category": "Syntax Error", "description": "Assignment instead of addition assignment", "buggy_snippet": "sum =+ arr[i];", "fixed_snippet": "sum += arr[i];", "detection_rule": None},
+                {"error_number": 4, "error_category": "Logical Error", "description": "Integer division", "buggy_snippet": "sum / n;", "fixed_snippet": "(double) sum / n;", "detection_rule": None},
+                {"error_number": 5, "error_category": "Syntax Error", "description": "Missing semicolon", "buggy_snippet": "\"Sum = \" + sum)", "fixed_snippet": "\"Sum = \" + sum);", "detection_rule": None},
+                {"error_number": 6, "error_category": "Syntax Error", "description": "Missing method call parenthesis and semicolon", "buggy_snippet": "sc.close\n    }", "fixed_snippet": "sc.close();\n    }", "detection_rule": None}
             ]
         },
         {
